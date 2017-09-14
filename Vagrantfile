@@ -77,7 +77,7 @@ Vagrant.configure("2") do |config|
   #
 
   # Added by Matt
-  config.vm.provider :virtualbox do |vb|
-    vb.gui = true
-  end
+  # config.vm.provider :virtualbox do |vb|
+  #   vb.gui = true
+  # end
 end
