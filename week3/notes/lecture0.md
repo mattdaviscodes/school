@@ -66,8 +66,8 @@ for (i = 10; i < n;)
 Why the fuck? Just write the whole thing and make the intent clear.
 
 > ### `for` Statement in C99
- In C99, variables can be declared _inside_ a loops initilization. This controls the scope.
-```c
+> In C99, variables can be declared _inside_ a loops initilization. This controls the scope.
+>```c
 for (int i = 0; i < n; i++);
 ```
 
