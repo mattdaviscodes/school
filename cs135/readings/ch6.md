@@ -19,7 +19,7 @@ while (i > 5)
     // Never executes, as i is not greater than 5
 ```
 
-##### Program: [Printing a Table of Squares](squares.c)
+#### Program: [Printing a Table of Squares](squares.c)
 
 ### The `do` Statement
 Closely related to `while` statement. Only real difference is that the controlling expression is tested _after_ each execution of the loop body. This means that `do` statements are good for when we need to ensure that we'll execute the loop body **at least once**.
@@ -103,7 +103,7 @@ loop_done: ...
 ```
 Helpful because it can get us all the way back out of nested loops if needed. However it is rarely used in everyday C programming.
 
-##### Program: [Balancing a Checkbook](checking.c)
+#### Program: [Balancing a Checkbook](checking.c)
 Had some trouble while doing this problem with runaway prompts. The things I isolated were:
 - No `break` statements in `switch` cases
 - Including newline characters in `scanf` calls
