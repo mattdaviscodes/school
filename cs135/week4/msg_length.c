@@ -13,7 +13,7 @@ int main(void)
         counter++;
     }
 
-    printf("Your message was %i character(s) long.\n", counter);
+    printf("Your message was %d character(s) long.\n", counter);
 
     return 0;
 }
