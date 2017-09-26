@@ -1,42 +1,36 @@
 /*
- * Name: sq_root_c.c
+ * Name: sq_root.c
  * Purpose: Use a loop to calculate the square root of user's input, extra credit
  * Author: Matt Davis
- * Created: 9/22/17
- * Last Updated: 9/22/17
+ * Created: 9/21/17
+ * Last Updated: 9/25/17
  */
 
 #include <stdio.h>
 #include <math.h>
 
-#define GOOD_ENOUGH 0.00001
+#define GOOD_ENOUGH 1e-5
 
 int main(void)
 {
-    float n, root, last_guess, guess = 1.0;
+    float n, guess = 1.0, last_guess;
     int counter = 0;
 
-    printf("Enter a number: ");
+    printf("Enter a number  : ");
     scanf("%f", &n);
 
-    // Calc actual root of input
-    root = sqrt(n);
+    // Always print 1 first -- this seems ridiculous
+    printf("%d\t%10.5f\n", counter, guess);
 
-    // Always print 1.0 as first guess
-    printf("%d%10.5f\n", counter, guess);
-
-    do {
-
+    while (1) {
         counter++;
         last_guess = guess;
         guess = (guess + (n / guess)) / 2.0;
-        printf("%d%10.5f\n", counter, guess);
-
-    } while(
-        // Is this formatting standard?
-        // guess != last_guess &&
-        (guess > root + GOOD_ENOUGH || guess < root - GOOD_ENOUGH)
-    );
+        if (fabs(n - (guess * guess)) < GOOD_ENOUGH || last_guess == guess) {
+            break;
+        }
+        printf("%d\t%10.5f\n", counter, guess);
+    }
 
     printf("Estimated square root of %.5f: %.5f\n", n, guess);
 

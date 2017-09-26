@@ -18,6 +18,9 @@ int main(void)
     printf("Enter a number: ");
     scanf("%lf", &n);
 
+    // Always print 1 first -- this seems ridiculous
+    printf("%10.5f\n", guess);
+
     while (1) {
         guess = (guess + (n / guess)) / 2.0;
         if (fabs(n - (guess * guess)) < GOOD_ENOUGH) {
