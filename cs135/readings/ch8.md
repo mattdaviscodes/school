@@ -64,3 +64,28 @@ int h[5] = {1, 2, [2] = 3, [4] = 5};
 ```
 
 > Some of these are just stupid. Be clear.
+
+## Multidimensional Arrays
+Arrays can have more than one dimension. (As many as you'd like). Declared like
+this:
+
+```c
+int m[5][9];    // m is an array containing five sub-arrays, each with 9 integers
+```
+
+Can be thought of as rows and columns, but this logic really breaks down after
+3D arrays. Variable -> Row -> Matrix -> Cube -> ???. In fact, Multidimensional arrays are not stored in memory as rows and columns, but rather as successive rows.
+
+Initialization options map directly to the rules for initializing a single dimensional array. One example below, but the other tenets above apply.
+
+```c
+int a[2][2] = {{1, 2}, {3, 4}};
+```
+
+### Constant Arrays
+Using `const` keyword tells compiler that code should not alter the members.
+Compiler will complain if code tries to alter the array. **This works for any variable type, not just arrays.**
+
+Main benefit of this is clarity and integrity. Someone reading the code will see
+a `const` variable and know that they shouldn't try to alter it. Also tells
+compiler to protect us from accidental alterations.
