@@ -198,11 +198,19 @@ void _log(void)
         float x;
         printf("Enter term: ");
         scanf("%f", &x);
-        printf("The result of log(x) is: %f\n", log(x));
+        if (x < 0) {
+            printf("Cannot take the log of a negative number!\n");
+        } else {
+            printf("The result of log(x) is: %f\n", log(x));
+        }
     } else {
         double x;
         printf("Enter term: ");
         scanf("%lf", &x);
-        printf("The result of log(x) is: %.15lf\n", log(x));
+        if (x < 0) {
+            printf("Cannot take the log of a negative number!\n");
+        } else {
+            printf("The result of log(x) is: %.15lf\n", log(x));
+        }
     }
 }
