@@ -126,3 +126,33 @@ double average(double, double);     // Also legal
 Book makes a distinction between **parameters** (variables in a function
 declaration) and **arguments** (expressions used when calling a function). I
 don't see any problem with using "argument" for both.
+
+Arguments are **passed by value**, meaning each arg is evaluated and its value
+is assigned to the corresponding parameter (variable). This means that the
+values passed in to functions are copies and cannot directly affect the inputs
+themselves.
+
+C allows functions to be called with args that don't match the types specified
+by the function definition. If an `int` is passed to a function expecting a
+`double`, the function will convert the input to `double` automatically.
+
+### Array Arguments
+Arrays may be passed as function args. If array is one-dimensional, the length
+of the array is often omitted. In this case, the arg can be any 1d array whose
+elements are of the proper type.
+
+```c
+int f(int a[]) {};  // No array length specified
+```
+
+>Book sort of waves a hand at some inconsistencies when passing in arrays. These
+have something to do with pointers, but I don't really get it yet. (Chapter 12
+is all about pointers.)
+
+Calling sizeof() to find the length of an array passed to a function won't work
+as expected, so lengths will need to be passed in separately if needed. This
+opens the possibility of having a hardcoded array length, but calling with an
+array that is actually longer or shorter than expected. Watch out.
+
+**NOTE:** An array passed to a function can be modified in-place, unlike most
+other variables. Again, has something to do with pointers.
