@@ -1,5 +1,5 @@
 /*
- * Name: project6.c
+ * Name: scrabble.c
  * Purpose: Implement simple Scrabble clone to practice functions
  * Author: Matt Davis
  * Created: 10/25/17
