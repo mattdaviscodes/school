@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
 
 #define LETTERS_IN_ALPHABET 26
 #define LETTERS_PER_DRAW 7
@@ -50,6 +51,7 @@ int main(void)
             print_letters_error(letter_set, LETTERS_IN_ALPHABET);
         }
     }
+
     print_score(score);
     print_outro();
 
@@ -98,7 +100,7 @@ int read_word (char word[], int max_size_word)
         if (c == '\n' || i > max_size_word) {
             break;
         }
-        word[i] = c;
+        word[i] = toupper(c);
         i++;
     }
     return i;
