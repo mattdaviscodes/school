@@ -22,6 +22,8 @@ int compute_word_value (char word[], int size_word);
 void print_intro(void);
 void print_outro(void);
 void print_letters(int letter_set[], int size_letter_set);
+void print_letters_error(int letter_set[], int size_letter_set);
+void print_score(int score);
 void populate_available_letters_array(int available_letters[], int size_available_letters);
 void populate_letter_scores_array(int letter_scores[], int size_available_letters);
 
@@ -38,11 +40,17 @@ int main(void)
     // Play game
     print_intro();
     print_letters(letter_set, LETTERS_IN_ALPHABET);
-    do {
+
+    while (1) {
         size_word = read_word(word, MAX_SIZE_WORD);
-    } while(!check_word(word, size_word, letter_set, LETTERS_IN_ALPHABET));
-    score = compute_word_value(word, size_word);
-    printf("The value of your word is: %d\n", score);
+        if (check_word(word, size_word, letter_set, LETTERS_IN_ALPHABET)) {
+            score = compute_word_value(word, size_word);
+            break;
+        } else {
+            print_letters_error(letter_set, LETTERS_IN_ALPHABET);
+        }
+    }
+    print_score(score);
     print_outro();
 
     return 0;
@@ -147,7 +155,7 @@ int compute_word_value (char word[], int size_word)
 }
 
 /*
- * Helper - Print game welcome message
+ * Helper - Print game welcome message.
  */
 void print_intro(void)
 {
@@ -155,7 +163,7 @@ void print_intro(void)
 }
 
 /*
- * Helper - Print game exit message
+ * Helper - Print game exit message.
  */
 void print_outro(void)
 {
@@ -163,7 +171,7 @@ void print_outro(void)
 }
 
 /*
- * Display user's 7 drawn letters
+ * Helper - Print user's drawn letters.
  */
 void print_letters(int letter_set[], int size_letter_set)
 {
@@ -174,6 +182,28 @@ void print_letters(int letter_set[], int size_letter_set)
         }
     }
     printf("\n");
+}
+
+/*
+ * Helper - Print error message for invalid submission.
+ */
+void print_letters_error(int letter_set[], int size_letter_set)
+{
+    printf("The word is not valid. Use your letters:");
+    for (int i = 0; i < size_letter_set; i++) {
+        for (int j = 0; j < letter_set[i]; j++) {
+            printf(" %c", i + 'A');
+        }
+    }
+    printf("\n");
+}
+
+/*
+ * Helper - Print word's total point value.
+ */
+void print_score(int score)
+{
+    printf("The value of your word is: %d\n", score);
 }
 
 /*
