@@ -22,23 +22,20 @@ int compute_word_value (char word[], int size_word);
 void print_intro(void);
 void print_outro(void);
 void print_letters(int letter_set[], int size_letter_set);
-void print_score(int score);
 void populate_available_letters_array(int available_letters[], int size_available_letters);
 void populate_letter_scores_array(int letter_scores[], int size_available_letters);
-
-// Debug only
-void print_letter_set(int letter_set[]);
 
 
 int main(void)
 {
     int size_word, score;
-    int letter_set[LETTERS_IN_ALPHABET] = {0};
     char word[MAX_SIZE_WORD];
 
-    // Populate arrays
+    // Create and populate 'bag' of scrabble tiles
+    int letter_set[LETTERS_IN_ALPHABET] = {0};
     generate_letter_set(letter_set, LETTERS_IN_ALPHABET, LETTERS_PER_DRAW);
 
+    // Play game
     print_intro();
     print_letters(letter_set, LETTERS_IN_ALPHABET);
     do {
@@ -80,7 +77,7 @@ void generate_letter_set (int letter_set[], int size_letter_set, int num_letters
 }
 
 /*
- *
+ * Prompt user for word and store.
  */
 int read_word (char word[], int max_size_word)
 {
@@ -100,7 +97,10 @@ int read_word (char word[], int max_size_word)
 }
 
 /*
+ * Verify that word submitted by user is valid.
  *
+ * Fails if word is blank (size == 0), or if the user played a letter they
+ * did not draw.
  */
 _Bool check_word (char word[], int size_word, int letter_set[], int size_letter_set)
 {
@@ -130,7 +130,7 @@ _Bool check_word (char word[], int size_word, int letter_set[], int size_letter_
 }
 
 /*
- *
+ * Compute the total point value of word submitted by user.
  */
 int compute_word_value (char word[], int size_word)
 {
@@ -146,11 +146,17 @@ int compute_word_value (char word[], int size_word)
 
 }
 
+/*
+ * Helper - Print game welcome message
+ */
 void print_intro(void)
 {
     printf("This program plays the game of scrabble.\n");
 }
 
+/*
+ * Helper - Print game exit message
+ */
 void print_outro(void)
 {
     printf("Thank you for playing.\n");
@@ -168,14 +174,6 @@ void print_letters(int letter_set[], int size_letter_set)
         }
     }
     printf("\n");
-}
-
-/*
- *
- */
-void print_score(int score)
-{
-    printf("The value of your word is: %d\n", score);
 }
 
 /*
@@ -285,12 +283,5 @@ void populate_letter_scores_array(int letter_scores[], int size_available_letter
                 letter_scores[i] = 10;
                 break;
         }
-    }
-}
-
-void print_letter_set(int letter_set[])
-{
-    for (int i = 0; i < LETTERS_IN_ALPHABET; i++) {
-        printf("%d\t%c: %d\n", i, i + 'A', letter_set[i]);
     }
 }
