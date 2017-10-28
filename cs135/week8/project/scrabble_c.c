@@ -1,8 +1,8 @@
 /*
- * Name: scrabble.c
- * Purpose: Implement simple Scrabble clone to practice functions
+ * Name: scrabble_c.c
+ * Purpose: Implement simple Scrabble clone to practice functions, extra credit
  * Author: Matt Davis
- * Created: 10/25/17
+ * Created: 10/27/17
  * Last Updated: 10/27/17
  */
 
@@ -27,6 +27,7 @@ void print_letters_error(int letter_set[], int size_letter_set);
 void print_score(int score);
 void populate_available_letters_array(int available_letters[], int size_available_letters);
 void populate_letter_scores_array(int letter_scores[], int size_available_letters);
+int prompt_continue(void);
 
 
 int main(void)
@@ -34,25 +35,29 @@ int main(void)
     int size_word, score;
     char word[MAX_SIZE_WORD];
 
-    // Create and populate 'bag' of scrabble tiles
-    int letter_set[LETTERS_IN_ALPHABET] = {0};
-    generate_letter_set(letter_set, LETTERS_IN_ALPHABET, LETTERS_PER_DRAW);
-
     // Play game
     print_intro();
-    print_letters(letter_set, LETTERS_IN_ALPHABET);
 
-    while (1) {
-        size_word = read_word(word, MAX_SIZE_WORD);
-        if (check_word(word, size_word, letter_set, LETTERS_IN_ALPHABET)) {
-            score = compute_word_value(word, size_word);
-            break;
-        } else {
-            print_letters_error(letter_set, LETTERS_IN_ALPHABET);
+    do {
+        // Create and populate 'bag' of scrabble tiles
+        int letter_set[LETTERS_IN_ALPHABET] = {0};
+        generate_letter_set(letter_set, LETTERS_IN_ALPHABET, LETTERS_PER_DRAW);
+
+        print_letters(letter_set, LETTERS_IN_ALPHABET);
+
+        while (1) {
+            size_word = read_word(word, MAX_SIZE_WORD);
+            if (check_word(word, size_word, letter_set, LETTERS_IN_ALPHABET)) {
+                score = compute_word_value(word, size_word);
+                break;
+            } else {
+                print_letters_error(letter_set, LETTERS_IN_ALPHABET);
+            }
         }
-    }
 
-    print_score(score);
+        print_score(score);
+    } while(prompt_continue());
+
     print_outro();
 
     return 0;
@@ -314,6 +319,28 @@ void populate_letter_scores_array(int letter_scores[], int size_available_letter
             case 'Z':
                 letter_scores[i] = 10;
                 break;
+        }
+    }
+}
+
+/*
+ * Ask if user would like to continue playing and return selection.
+ */
+int prompt_continue(void)
+{
+    char choice;
+
+    while (1) {
+        printf("Do you want to play again (Y/N): ");
+        scanf(" %c", &choice);
+        choice = toupper(choice);
+
+        while (getchar() != '\n');   // Hack to capture newline after Y or N
+
+        if (choice == 'Y') {
+            return 1;
+        } else if (choice == 'N') {
+            return 0;
         }
     }
 }
