@@ -2,3 +2,6 @@
 
 cs135/readings/executables/
 *.out
+.idea
+cmake-build-debug/
+CMakeLists.txt
