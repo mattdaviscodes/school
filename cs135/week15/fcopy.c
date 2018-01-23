@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     // THIS IS INCORRECT
     // while ((*fp1++ = *fp2++))
     //     ;
-    while ((ch = fgetc(fp1)) != EOF) {
+    while ((ch = fgetc(fp1))) {
         fputc(ch, fp2);
     }
 
