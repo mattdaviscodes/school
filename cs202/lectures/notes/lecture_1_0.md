@@ -15,7 +15,7 @@ NOTE: Functions in C++ can only `return` one value.
 ### Prototype
 Information for compiler to properly interpret calls. These are usually
 kept either in a header file or before `main()` in a one-file program.
-```
+```cpp
 // <return type> <function name> (<parameters>);
 int squareNumber(int n);
 ```
@@ -25,7 +25,7 @@ Actual code for function. Definition must match prototype, and be placed
 after `main()`. All functions are equal, no function *needs* to be
 contained inside another. `return` statement sends data back to caller.
 
-```
+```cpp
 int squareNumber(intn ) {
     int answer = n * n;
     return answer;
@@ -36,7 +36,7 @@ int squareNumber(intn ) {
 How function is used by program. Transfers execution control to the
 function.
 
-```
+```cpp
 int tenSquared = sqareNum(10);
 ```
 
@@ -55,7 +55,7 @@ which may be scattered throughout function definition.
 They are part of the function signature. **Arguments** as the actual
 values passed to a function.
 
-```
+```cpp
 doubleprecisionSum(double a, double b);  // a and b are parameters
 precisionSum(0.1 * 1000000, 1e-3);       // these numbers are args
 ```
@@ -64,7 +64,7 @@ precisionSum(0.1 * 1000000, 1e-3);       // these numbers are args
 Conditions include assumptions about program state, not just the input
 and output. Usually contained in a comment above function prototypes.
 
-```
+```cpp
 // Function name: showInterest
 // Pre-condition: balance is nonnegative
 // Post-condition: amount of interest on given balance, at given rate
@@ -80,7 +80,7 @@ an integer value (return 0 on successful completion, non 0 on fail).
 Provides direct access to caller's actual argument. Caller's data can be
 modified by funciton.
 
-```
+```cpp
 void squareThisNumber(int& n);
 ```
 
@@ -89,7 +89,7 @@ Calling by reference arguments is inherently dangerous. Data can be
 changed, which is sometimes not desirable. In this case, we should pass
 const reference to "protect" data.
 
-```
+```cpp
 void sendConstRef(const int &par1, const in &par2);
 ```
 
@@ -99,7 +99,7 @@ NOTE: Calling functions this way can result in a funciton signature
 than a regular reference. They are **different functions** even though
 they have the same name.
 
-```
+```cpp
 // These are different
 void doThing(int &a);
 void doThing(const int &a);
@@ -119,7 +119,7 @@ their addresses which represent unique locations in memory.
 
 The **address-of operator** is `&`.
 
-```
+```cpp
 int n = 5;
 cout << n;  // 5
 cout << &n; // 0x1015
@@ -129,7 +129,7 @@ cout << &n; // 0x1015
 A variable whose value hold the address of something somewhere in
 memory.
 
-```
+```cpp
 int x = 37;
 int * ptr;
 
@@ -156,7 +156,7 @@ to**.
 To get the value that a pointer points to, we use the derefence operator
 `*`.
 
-```
+```cpp
 int n = 5;
 int *ptr = &n;
 cout << ptr << endl;    // 0x1015
