@@ -62,15 +62,76 @@ StudentRecord Student1 = {"John Doe", 123, "CSE", 'M'};
 ```
 
 ### Assignment
+The values contained in one struct type variable can be assigned to
+another variable of the same struct type.
+
+```cpp
+StudentRecord Student2 = Student1;  // Assign existing student to new one
+```
 
 ### Nested Structures
+A struct type can be a member of another struct.
+
+```cpp
+struct Point {
+    double x, y;
+};
+point P;
+
+struct Line {
+    Point p1, p2;   // Heck yeah
+};
+Line L;
+```
+
+It is illegal to nest a structure of some type within a
+structure of the *same type*. **However**, legal to store pointer to
+struct of same type.
+
+```cpp
+struct Test {
+    Test t1;    // Illegal
+    Test* t2;   // Legal
+};
+```
+
+In the case of `t1` the compiler does not yet know how much memory to
+allocate for a Test object, so it fails.
 
 ### Arrays of Structs
+As stated, arrays are homogeneous, but because a struct definition
+creates a new custom data type, we may create an array made up of many
+instances of a struct.
 
-### Struct Arrays in Structs
+```cpp
+struct Point {
+    double x, y;
+};
+
+Point point_array[100]; // Array of 100 Point variables
+```
+
+Also legal to store an array of structs as a member of another struct.
+
+```cpp
+struct Square {
+    Point p[4];
+};
+Square s;   // Each Square object will contain a 4-element Point array
+```
 
 ### Structs and Functions
+Structs are valid function parameters and support all the call methods --
+by value, by reference, by pointer.
 
+```cpp
+double points_distance(Point p1, Point p2) {
+    return sqrt((p1.x-p2.x) * (p1.x - p2.x) + (p1.y-p2.y) * (p1.y-p2.y);
+}
+
+Point p1, p2;
+double p12_distance = points_distance(p1, p2);
+```
 
 
 
