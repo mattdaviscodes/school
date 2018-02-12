@@ -10,11 +10,11 @@
 using namespace std;
 
 RentalCar::RentalCar() {
-    m_year = 2018;
-    strcpy(m_make, "Ford");
-    strcpy(m_model, "F-150");
-    m_price = 100.99;
-    m_available = true;
+    m_year = -1;
+    strcpy(m_make, "NOMAKE");
+    strcpy(m_model, "NOMODEL");
+    m_price = 0;
+    m_available = false;
 }
 
 RentalCar::RentalCar(int year, const char *make, const char *model, float price, bool available) {
