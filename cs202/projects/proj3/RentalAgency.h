@@ -8,6 +8,7 @@
 #include "RentalCar.h"
 
 #define MAX_CSTRING_SIZE 255
+#define AGENCIES_IN_FILE 3
 #define ZIPCODE_SIZE 5
 #define INVENTORY_SIZE 5
 
