@@ -1,0 +1,20 @@
+Hertz 93619
+2014 Toyota Tacoma 115.12 1
+2012 Honda CRV 85.10 0
+2015 Ford Fusion 90.89 0
+2013 GMC Yukon 110.43 0
+2009 Dodge Neon 45.25 1
+
+Alamo 89502
+2011 Toyota Rav4 65.02 1
+2012 Mazda CX5 86.75 1
+2016 Subaru Outback 71.27 0
+2015 Ford F150 112.83 1
+2010 Toyota Corolla 50.36 1
+
+Budget 93035
+2008 Ford Fiesta 42.48 0
+2009 Dodge Charger 55.36 1
+2012 Chevy Volt 89.03 0
+2007 Subaru Legacy 59.19 0
+2010 Nissan Maxima 51.68 1
