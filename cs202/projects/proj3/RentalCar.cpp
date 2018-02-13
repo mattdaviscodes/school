@@ -26,12 +26,36 @@ RentalCar::RentalCar(int year, const char *make, const char *model, float price,
 }
 
 
-// TEST
-
 
 void RentalCar::print() const {
     cout << m_year << " " << m_make << " " << m_model << ", Price: $" << m_price << ", Available: " << boolalpha
          << m_available << endl;
+}
+
+void RentalCar::estimateCost(int days) const {
+    cout << "Estimated cost to rent the " << m_make << " " << m_model << " for " << days << " days: $" << m_price * days
+         << endl;
+}
+
+// Getters
+int RentalCar::getYear() const {
+    return m_year;
+}
+
+char *RentalCar::getMake() {
+    return m_make;
+}
+
+char *RentalCar::getModel() {
+    return m_model;
+}
+
+float RentalCar::getPrice() const {
+    return m_price;
+}
+
+bool RentalCar::getAvailable() const {
+    return m_available;
 }
 
 

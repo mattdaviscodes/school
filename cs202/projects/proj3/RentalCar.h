@@ -15,8 +15,8 @@ class RentalCar {
 
     // Getters
     int getYear() const;
-    char* getMake() const;
-    char* getModel() const;
+    char* getMake();
+    char* getModel();
     float getPrice() const;
     bool getAvailable() const;
 
@@ -30,6 +30,7 @@ class RentalCar {
     // Other methods
     void print() const;
     void estimateCost() const;
+    void estimateCost(int days) const;
 
     private:
     int m_year;
