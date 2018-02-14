@@ -1,6 +1,9 @@
-//
-// Created by Matthew Davis on 2/8/18.
-//
+/**
+ * @brief  CS-202 Project 3 - RentalAgency class definition
+ * @Author Matt Davis (mattdavis@nevada.unr.edu)
+ * @date   2/8/18
+ *
+ */
 
 #ifndef SCHOOL_RENTALAGENCY_H
 #define SCHOOL_RENTALAGENCY_H

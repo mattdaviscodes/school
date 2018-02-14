@@ -1,6 +1,9 @@
-//
-// Created by Matthew Davis on 2/8/18.
-//
+/**
+ * @brief  CS-202 Project 3 - RentalCar class definition
+ * @Author Matt Davis (mattdavis@nevada.unr.edu)
+ * @date   2/8/18
+ *
+ */
 
 #ifndef SCHOOL_RENTALCAR_H
 #define SCHOOL_RENTALCAR_H
@@ -29,7 +32,6 @@ class RentalCar {
 
     // Other methods
     void print() const;
-    void estimateCost() const;
     void estimateCost(int days) const;
 
     private:

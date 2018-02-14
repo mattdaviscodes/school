@@ -1,4 +1,10 @@
-// TODO: Header
+/**
+ * @brief  CS-202 Project 3
+ * @Author Matt Davis (mattdavis@nevada.unr.edu)
+ * @date   2/8/18
+ *
+ * Expand on Project 2 car rental code by exploring classes, structs, and arrays of ATDs
+ */
 
 #include <iostream>
 #include <fstream>
@@ -12,10 +18,8 @@ int menu();
 int getIntBetween(int min, int max);
 void fiveDigitIntToArray(int fiveDigitInt, int *arr);
 void fiveDigitArrayFromFile(int *arr, ifstream &inf);
-RentalAgency readRentalAgencyFromFile(ifstream &inf);
 RentalAgency readRentalAgencyAndInventoryFromFile(ifstream &inf);
 void readAllDataFromFile(RentalAgency * agencies);
-void readAllDataFromFile(RentalAgency * agencies, char * filename);
 void printRentalAgency(RentalAgency agency);
 void printRentalAgencies(RentalAgency * agencies);
 RentalCar readRentalCarFromFile(ifstream &inf);
@@ -25,7 +29,7 @@ void estimateRentalCost(RentalAgency * agencies);
 void findMostExpensiveCar(RentalAgency * agencies);
 void writeAvailableCarsToFile(RentalAgency * agencies);
 
-// custom string functions
+// Custom string functions required by project spec
 size_t myStringLength(const char * str);
 int myStringCompare(const char * str1, const char * str2);
 char *myStringCopy(char * destination, const char * source);
@@ -33,15 +37,10 @@ char * myStringCat(char * destination, const char * source);
 
 
 int main() {
-    RentalAgency agency;
     RentalAgency agencies[AGENCIES_IN_FILE];
-    RentalCar car;
     ifstream inf;
     bool exit = false;
     int selection;
-
-    // TODO: Remove
-    readAllDataFromFile(agencies, "Agencies.txt");
 
     do {
         selection = menu();
@@ -91,6 +90,11 @@ int getIntBetween(int min, int max)
     return selection;
 }
 
+/*
+ * Convert a five digit integer to an int array.
+ * This function uses modulous to extract the trailing digit from a base-10 integer, then stores those digits
+ * in a target int array working from end to beginning.
+ */
 void fiveDigitIntToArray(int fiveDigitInt, int *arr) {
     int digit;
     int *arrEnd = arr + ZIPCODE_SIZE - 1;
@@ -103,21 +107,18 @@ void fiveDigitIntToArray(int fiveDigitInt, int *arr) {
     *arrEnd = fiveDigitInt;         // At loop end, fiveDigitInt only contains final (first) digit
 }
 
+/*
+ * Read a five digit integer from an ifstream and pass to fiveDigitIntToArray(). Mainly a helper function.
+ */
 void fiveDigitArrayFromFile(int *arr, ifstream &inf) {
     int fiveDigitInt;
     inf >> fiveDigitInt;
     fiveDigitIntToArray(fiveDigitInt, arr);
 }
 
-RentalAgency readRentalAgencyFromFile(ifstream &inf) {
-    RentalAgency agency;
-
-    inf >> agency.name;
-    fiveDigitArrayFromFile(agency.zipcode, inf);
-
-    return agency;
-}
-
+/*
+ * Read in a single rental agency and all of it's associated inventory data from an ifstream.
+ */
 RentalAgency readRentalAgencyAndInventoryFromFile(ifstream &inf) {
     RentalAgency agency;
     RentalCar car;
@@ -133,6 +134,9 @@ RentalAgency readRentalAgencyAndInventoryFromFile(ifstream &inf) {
     return agency;
 }
 
+/*
+ * Prompt user for input filename, then read in all rental agency and rental car data until file is exhausted.
+ */
 void readAllDataFromFile(RentalAgency * agencies) {
     ifstream inf;
     char filename[MAX_CSTRING_SIZE];
@@ -155,24 +159,9 @@ void readAllDataFromFile(RentalAgency * agencies) {
     inf.close();
 }
 
-void readAllDataFromFile(RentalAgency * agencies, char * filename) {
-    ifstream inf;
-
-    inf.open(filename);
-    if (inf) {
-
-        for (int i = 0; i < AGENCIES_IN_FILE; i++) {
-            RentalAgency & agency = *agencies++;
-            agency = readRentalAgencyAndInventoryFromFile(inf);
-        }
-
-    } else {
-        cerr << "Unable to open file " << filename << endl;
-    }
-
-    inf.close();
-}
-
+/*
+ * Print rental agency data, including inventory details
+ */
 void printRentalAgency(RentalAgency agency) {
     int *arrPtr = agency.zipcode;
     RentalCar *inventory = agency.inventory;
@@ -192,12 +181,18 @@ void printRentalAgency(RentalAgency agency) {
     cout << endl;
 }
 
+/*
+ * Helper function to print all rental agencies data. Mainly calls printRentalAgency()
+ */
 void printRentalAgencies(RentalAgency * agencies) {
     for (int i = 0; i < AGENCIES_IN_FILE; i++) {
         printRentalAgency(*agencies++);
     }
 }
 
+/*
+ * Read in one rental car's data from an ifstream
+ */
 RentalCar readRentalCarFromFile(ifstream &inf) {
     int year;
     char make[MAX_CSTRING_SIZE], model[MAX_CSTRING_SIZE];
@@ -210,6 +205,9 @@ RentalCar readRentalCarFromFile(ifstream &inf) {
     return car;
 }
 
+/*
+ * Prompt user to select a rental agency by entering an integer 1-3
+ */
 RentalAgency selectAgency(RentalAgency * agencies) {
     int selection;
     RentalAgency agency;
@@ -227,6 +225,9 @@ RentalAgency selectAgency(RentalAgency * agencies) {
     return agency;
 }
 
+/*
+ * Prompt user to select a rental car by entering an integer 1-5
+ */
 RentalCar selectCar(RentalCar * cars) {
     int selection;
     RentalCar * carsIterator = cars;
@@ -242,6 +243,9 @@ RentalCar selectCar(RentalCar * cars) {
     return *(cars + selection);
 }
 
+/*
+ * Calculate the estimated cost to rent a car for a user-input number of days, then print to screen
+ */
 void estimateRentalCost(RentalAgency * agencies) {
     RentalAgency agency;
     RentalCar car;
@@ -255,6 +259,9 @@ void estimateRentalCost(RentalAgency * agencies) {
     car.estimateCost(days);
 }
 
+/*
+ * Locate the rental car with the greatest m_price member and print to screen
+ */
 void findMostExpensiveCar(RentalAgency * agencies) {
     RentalCar car, mostExpensiveCar = *(agencies->inventory);
     RentalCar * inventory;
@@ -275,6 +282,9 @@ void findMostExpensiveCar(RentalAgency * agencies) {
     mostExpensiveCar.print();
 }
 
+/*
+ * Prompt user to enter output file and write all available rental cars to that file
+ */
 void writeAvailableCarsToFile(RentalAgency * agencies) {
     char filename[MAX_CSTRING_SIZE];
     ofstream of;
@@ -317,8 +327,53 @@ void writeAvailableCarsToFile(RentalAgency * agencies) {
     of.close();
 }
 
-// custom string functions
-size_t myStringLength(const char * str);
-int myStringCompare(const char * str1, const char * str2);
-char *myStringCopy(char * destination, const char * source);
-char *myStringCat(char * destination, const char * source);
+/*
+ * Find the length of a string, not including the null-terminator
+ */
+size_t myStringLength(const char * str) {
+    size_t i = 0;
+
+    while (*str++) {
+        i++;
+    };
+
+    return i;
+}
+
+/*
+ * Compare two strings. Return -1 of str1 is less than str2, 1 if the opposite, 0 if they're identical
+ */
+int myStringCompare(const char * str1, const char * str2) {
+    while (*str1 && *str2 && *str1 == *str2) {
+        str1++;
+        str2++;
+    }
+
+    return *str1 - *str2;
+}
+
+/*
+ * Copy a source string to a destination string
+ */
+char *myStringCopy(char * destination, const char * source) {
+    while ((*destination++ = *source++))
+        ;
+
+    return destination;
+}
+
+/*
+ * Concatenate a source string onto the end of a destination string
+ */
+char *myStringCat(char * destination, const char * source) {
+    // Find end of destination
+    while (*destination) {
+        destination++;  // Leaves destination pointing to null character
+    }
+
+    // Copy source onto end of destination
+    while ((*destination++ = *source++))
+        ;
+
+    return destination;
+}
