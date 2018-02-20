@@ -117,3 +117,53 @@ object modifies it, all objects will see the change. *Not bound to a
 specific object, but mark a state of the class itself.*
 
 Useful for the reasons I listed above. :-)
+
+---BEGIN 2/15 LECTURE---
+
+When used in a class, static variables belong to the class, not any one
+object.
+
+```cpp
+class MyClass {
+    public:
+        int m_i;
+        static int s_i;
+}
+
+MyClass mc;
+
+mc.m_i;         // legal
+MyClass.m_i;    // compiler error
+MyClass.s_i;    // legal
+mc.s_i;         // legal, I think
+```
+
+In order to track counts of active objects using static class members,
+it's important to include the proper logic in constructors and
+destructors. To keep a count of the total objects created, all
+constructors for that class must incremement the static variable.
+Careful! This includes copy constructors. In order to track the count
+of *active* objects of the class, we must decrement the counter in the
+class destructor.
+
+### Static Methods
+Static methods are just like regular functions, except they are housed
+inside the class's namespace. Like regular functions, they *cannot*
+access class members
+
+### Static Member Definition
+Regular class memebers are allocated at object instantiation. Static
+members don't belong to a single object, though. They are not allocated
+by default. In a class, only *declaring* a static variable value is not
+enough. We must *define* it also.
+
+```cpp
+// Car.h
+class Car {
+    private:
+        static int s _carFactoryCnt;    // Not enough alone
+}
+
+// Car.cpp
+int Car::s_carFactoryCnt = 0;           // This line required to initialize value
+```
