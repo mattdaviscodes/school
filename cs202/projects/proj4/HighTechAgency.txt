@@ -1,0 +1,6 @@
+Enterprise 89502
+2014 Toyota Tacoma 115.12 {gps} 1
+2012 Honda CRV 85.10 {camera lidar} 0 Mike
+2011 Toyota Rav4 65.02 {} 0 Oscar
+2009 Dodge Neon 45.25 {camera lidar radar} 1
+2015 Ford Fusion 90.89 {lidar} 0 Juliet
