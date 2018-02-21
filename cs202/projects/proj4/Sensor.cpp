@@ -4,6 +4,12 @@
 
 #include "Sensor.h"
 
+// Define static variables
+int Sensor::gps_cnt = 0;
+int Sensor::camera_cnt = 0;
+int Sensor::lidar_cnt = 0;
+int Sensor::radar_cnt = 0;
+
 // Constructors
 Sensor::Sensor() {
 
@@ -16,7 +22,7 @@ Sensor::Sensor(const Sensor & sensor) {
 };
 
 // Static Getters
-int Sensor::getGPSCnt() { return gps_cnt; };
+int Sensor::getGPSCnt() { return Sensor::gps_cnt; };
 int Sensor::getCameraCnt() { return camera_cnt; };
 int Sensor::getLidarCnt() { return lidar_cnt; };
 int Sensor::getRadarCnt() { return radar_cnt; };

@@ -12,9 +12,21 @@ using namespace std;
 
 
 // Constructors
-Car::Car();
-Car::Car(const char * make, const char * model, const int year, const float baseprice, const Sensor * sensors);
-Car::Car(const Car & car);
+Car::Car() {
+    setMake("\0");
+    setModel("\0");
+    setYear(0);
+    setBasePrice(0);
+    setAvailable(false);
+    setOwner("\0");
+
+    m_finalprice = 0;   // TODO: Use updatePrice() here once implemented
+
+};
+Car::Car(const char * make, const char * model, const int year, const float baseprice, const Sensor * sensors) {
+
+};
+Car::Car(const Car & car) {};
 
 // Getters
 char * Car::getMake() { return m_make; };
@@ -35,10 +47,10 @@ void Car::setAvailable(const bool available) {m_available = available; };
 void Car::setOwner(const char * owner) { myStringCopy(m_owner, owner); };
 
 // Operator overload
-void Car::operator+(const Sensor & sensor);
-void Car::operator+(const char * owner);
+void Car::operator+(const Sensor & sensor) {};
+void Car::operator+(const char * owner) {};
 
 // Other
-float Car::updatePrice();
-void Car::print();
-float Car::estimateCost(const int days);
+float Car::updatePrice() {};
+void Car::print() {};
+float Car::estimateCost(const int days) {};
