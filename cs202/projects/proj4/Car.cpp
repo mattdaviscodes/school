@@ -20,7 +20,7 @@ Car::Car() {
     setAvailable(false);
     setOwner("\0");
 
-    m_finalprice = 0;   // TODO: Use updatePrice() here once implemented
+    updatePrice();
 
 };
 Car::Car(const char *make, const char *model, const int year, const float baseprice, const bool available,
@@ -33,7 +33,7 @@ Car::Car(const char *make, const char *model, const int year, const float basepr
 
     // TODO Sensors
 
-    m_finalprice = m_baseprice;   // TODO: Use updatePrice() here once implemented
+    updatePrice();
 
 };
 Car::Car(const Car & car) {};
@@ -57,7 +57,18 @@ void Car::setAvailable(const bool available) {m_available = available; };
 void Car::setOwner(const char * owner) { myStringCopy(m_owner, owner); };
 
 // Operator overload
-void Car::operator+(const Sensor & sensor) {};
+void Car::operator+(Sensor & sensor) {
+    Sensor * sensors_ptr = m_sensors;
+
+    // Iterate over car's sensors looking for an open spot (sensor type="none")
+    for (int i = 0; i < MAX_SENSORS_PER_CAR; i++, sensors_ptr++) {
+        if (!myStringCompare(sensors_ptr->getType(), "none")) {
+            sensors_ptr->setType(sensor.getType());
+            updatePrice();
+            break;
+        };
+    }
+};
 void Car::operator+(const char * owner) {};
 ostream & operator<<(ostream & os, const Car & car) {
     os << "Car(m_make=" << car.m_make << ", m_model=" << car.m_model << ", m_year=" << car.m_year << ", m_baseprice="
@@ -68,7 +79,16 @@ ostream & operator<<(ostream & os, const Car & car) {
 };
 
 // Other
-float Car::updatePrice() {};
+float Car::updatePrice() {
+    float price = m_baseprice;
+    Sensor * sensors_ptr = m_sensors;
+
+    for (int i = 0; i < MAX_SENSORS_PER_CAR; i++, sensors_ptr++) {
+        price += sensors_ptr->getExtraCost();
+    }
+
+    return m_finalprice = price;
+};
 void Car::print() {
 };
 float Car::estimateCost(const int days) {};

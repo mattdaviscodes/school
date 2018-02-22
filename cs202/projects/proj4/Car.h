@@ -41,7 +41,7 @@ public:
     void setOwner(const char * owner);
 
     // Operator overload
-    void operator+(const Sensor & sensor);
+    void operator+(Sensor & sensor);
     void operator+(const char * owner);
     friend ostream & operator<<(ostream & os, const Car & car);
 

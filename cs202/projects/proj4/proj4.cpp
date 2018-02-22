@@ -12,9 +12,19 @@
 using namespace std;
 
 int main() {
-    Sensor s("lidar");
-    Sensor j(s);
-    cout << boolalpha << (s == j) << endl;
+    Sensor sensors[MAX_SENSORS_PER_CAR];
+    Sensor lidar("lidar"), radar("radar"), camera("camera"), gps("gps");
+    Car c("Ford", "F-150", 2006, 99.99, true, sensors);
+
+    cout << c << endl;
+    c + lidar;
+    cout << c << endl;
+    c + radar;
+    cout << c << endl;
+    c + camera;
+    cout << c << endl;
+    c + gps;
+    cout << c << endl;
 
     return 0;
 }
