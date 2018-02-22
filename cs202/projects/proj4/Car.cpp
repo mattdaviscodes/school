@@ -23,7 +23,17 @@ Car::Car() {
     m_finalprice = 0;   // TODO: Use updatePrice() here once implemented
 
 };
-Car::Car(const char * make, const char * model, const int year, const float baseprice, const Sensor * sensors) {
+Car::Car(const char *make, const char *model, const int year, const float baseprice, const bool available,
+         const Sensor *sensors) {
+    setMake(make);
+    setModel(model);
+    setYear(year);
+    setBasePrice(baseprice);
+    setAvailable(available);
+
+    // TODO Sensors
+
+    m_finalprice = m_baseprice;   // TODO: Use updatePrice() here once implemented
 
 };
 Car::Car(const Car & car) {};
@@ -49,8 +59,16 @@ void Car::setOwner(const char * owner) { myStringCopy(m_owner, owner); };
 // Operator overload
 void Car::operator+(const Sensor & sensor) {};
 void Car::operator+(const char * owner) {};
+ostream & operator<<(ostream & os, const Car & car) {
+    os << "Car(m_make=" << car.m_make << ", m_model=" << car.m_model << ", m_year=" << car.m_year << ", m_baseprice="
+       << car.m_baseprice << ", m_finalprice=" << car.m_finalprice << ", m_available=" << boolalpha << car.m_available
+       << ", m_owner=" << car.m_owner << ")";
+
+    return os;
+};
 
 // Other
 float Car::updatePrice() {};
-void Car::print() {};
+void Car::print() {
+};
 float Car::estimateCost(const int days) {};

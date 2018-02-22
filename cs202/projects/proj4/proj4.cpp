@@ -5,10 +5,14 @@
 #include <iostream>
 
 #include "Sensor.h"
+#include "Car.h"
 
 using namespace std;
 
 int main() {
+    Car car;
+
+    cout << car << endl;
 
     return 0;
 }

@@ -5,7 +5,11 @@
 #ifndef SCHOOL_CAR_H
 #define SCHOOL_CAR_H
 
+#include <iostream>
+
 #include "Sensor.h"
+
+using namespace std;
 
 const int MAX_SENSORS_PER_CAR = 3;
 
@@ -13,7 +17,9 @@ class Car {
 public:
     // Constructors
     Car();
-    Car(const char * make, const char * model, const int year, const float baseprice, const Sensor * sensors);
+
+    Car(const char *make, const char *model, const int year, const float baseprice, const bool available,
+        const Sensor *sensors);
     Car(const Car & car);
 
     // Getters
@@ -37,6 +43,7 @@ public:
     // Operator overload
     void operator+(const Sensor & sensor);
     void operator+(const char * owner);
+    friend ostream & operator<<(ostream & os, const Car & car);
 
     // Other
     float updatePrice();
