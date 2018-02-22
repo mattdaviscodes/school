@@ -5,8 +5,18 @@
 #ifndef SCHOOL_SENSOR_H
 #define SCHOOL_SENSOR_H
 
-const int MAX_CSTRING_SIZE = 256;
+#include <iostream>
 
+#include "proj4.h"
+
+using namespace std;
+
+const int MAX_CSTRING_SIZE = 256;
+const float SENSOR_COST_GPS = 5.0;
+const float SENSOR_COST_CAMERA = 10.0;
+const float SENSOR_COST_LIDAR = 15.0;
+const float SENSOR_COST_RADAR = 20.0;
+const float SENSOR_COST_NONE = 0.0;
 
 class Sensor {
 
@@ -17,8 +27,12 @@ public:
     Sensor(const Sensor & sensor);  // Copy
 
     // Getters
+    char * getType();
+    float getExtraCost();
 
     // Setters
+    void setType(const char * type);
+    void setExtraCost(const float extracost);
 
     // Static Getters
     static int getGPSCnt();
@@ -33,6 +47,7 @@ public:
     static void resetRadarCnt();
 
     // Operator overload
+    friend ostream & operator<<(ostream & os, const Sensor & sensor);
 
 protected:
 
@@ -45,6 +60,9 @@ private:
     static int radar_cnt;
 
 };
+
+// Overload comparison operator as non-member function
+bool operator ==(Sensor & s1, Sensor & s2);
 
 
 #endif //SCHOOL_SENSOR_H
