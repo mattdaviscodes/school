@@ -13,18 +13,18 @@ using namespace std;
 
 int main() {
     Sensor sensors[MAX_SENSORS_PER_CAR];
-    Sensor lidar("lidar"), radar("radar"), camera("camera"), gps("gps");
+    for (int i = 0; i < 3; i++) {
+        sensors[i].setType("lidar");
+    }
+
     Car c("Ford", "F-150", 2006, 99.99, true, sensors);
+    Car c2(c);
 
     cout << c << endl;
-    c + lidar;
-    cout << c << endl;
-    c + radar;
-    cout << c << endl;
-    c + camera;
-    cout << c << endl;
-    c + gps;
-    cout << c << endl;
+    cout << c.getSensors()[0] << endl;
+    cout << c2 << endl;
+    cout << c.getSensors()[0] << endl;
+
 
     return 0;
 }

@@ -19,8 +19,8 @@ public:
     Car();
 
     Car(const char *make, const char *model, const int year, const float baseprice, const bool available,
-        const Sensor *sensors);
-    Car(const Car & car);
+        Sensor *sensors);
+    Car(Car & car);
 
     // Getters
     char * getMake();
@@ -41,8 +41,8 @@ public:
     void setOwner(const char * owner);
 
     // Operator overload
-    void operator+(Sensor & sensor);
-    void operator+(const char * owner);
+    Car& operator+(Sensor & sensor);
+    Car& operator+(const char * owner);
     friend ostream & operator<<(ostream & os, const Car & car);
 
     // Other

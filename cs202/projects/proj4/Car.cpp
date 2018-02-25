@@ -24,19 +24,41 @@ Car::Car() {
 
 };
 Car::Car(const char *make, const char *model, const int year, const float baseprice, const bool available,
-         const Sensor *sensors) {
+         Sensor *sensors) {
+    Sensor * sensor_arr = m_sensors;
     setMake(make);
     setModel(model);
     setYear(year);
     setBasePrice(baseprice);
     setAvailable(available);
+    setOwner("\0");
 
-    // TODO Sensors
+    // TODO: Make sure this doesn't break my shit
+    for (int i = 0; i < MAX_SENSORS_PER_CAR; i++) {
+        *sensor_arr++ = Sensor(*sensors++);
+    }
 
     updatePrice();
 
 };
-Car::Car(const Car & car) {};
+Car::Car(Car & car) {
+    Sensor * sensors_in = car.getSensors();
+    Sensor * sensors_out = m_sensors;
+
+    setMake(car.getMake());
+    setModel(car.getModel());
+    setYear(car.getYear());
+    setBasePrice(car.getBasePrice());
+    setAvailable(car.getAvailable());
+    setOwner(car.getOwner());
+
+    for (int i = 0; i < MAX_SENSORS_PER_CAR; i++) {
+        *sensors_out++ = Sensor(*sensors_in++);
+    }
+
+    updatePrice();
+
+};
 
 // Getters
 char * Car::getMake() { return m_make; };
@@ -57,7 +79,7 @@ void Car::setAvailable(const bool available) {m_available = available; };
 void Car::setOwner(const char * owner) { myStringCopy(m_owner, owner); };
 
 // Operator overload
-void Car::operator+(Sensor & sensor) {
+Car& Car::operator+(Sensor & sensor) {
     Sensor * sensors_ptr = m_sensors;
 
     // Iterate over car's sensors looking for an open spot (sensor type="none")
@@ -68,8 +90,12 @@ void Car::operator+(Sensor & sensor) {
             break;
         };
     }
+    return *this;
 };
-void Car::operator+(const char * owner) {};
+Car& Car::operator+(const char * owner) {
+    setOwner(owner);
+    return *this;
+};
 ostream & operator<<(ostream & os, const Car & car) {
     os << "Car(m_make=" << car.m_make << ", m_model=" << car.m_model << ", m_year=" << car.m_year << ", m_baseprice="
        << car.m_baseprice << ", m_finalprice=" << car.m_finalprice << ", m_available=" << boolalpha << car.m_available
@@ -90,5 +116,8 @@ float Car::updatePrice() {
     return m_finalprice = price;
 };
 void Car::print() {
+    cout << *this << endl;
 };
-float Car::estimateCost(const int days) {};
+float Car::estimateCost(const int days) {
+    return getFinalPrice() * days;
+};
