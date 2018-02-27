@@ -14,6 +14,9 @@ using namespace std;
 const int MAX_SENSORS_PER_CAR = 3;
 
 class Car {
+
+    friend std::istream& operator>>(std::istream& is, Car& car);
+
 public:
     // Constructors
     Car();

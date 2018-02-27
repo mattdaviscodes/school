@@ -8,23 +8,14 @@
 #include "proj4.h"
 #include "Sensor.h"
 #include "Car.h"
+#include "Agency.h"
 
 using namespace std;
 
 int main() {
-    Sensor sensors[MAX_SENSORS_PER_CAR];
-    for (int i = 0; i < 3; i++) {
-        sensors[i].setType("lidar");
-    }
-
-    Car c("Ford", "F-150", 2006, 99.99, true, sensors);
-    Car c2(c);
-
-    cout << c << endl;
-    cout << c.getSensors()[0] << endl;
-    cout << c2 << endl;
-    cout << c.getSensors()[0] << endl;
-
+    char s[100];
+    cin >> s;
+    cout << s << endl;
 
     return 0;
 }

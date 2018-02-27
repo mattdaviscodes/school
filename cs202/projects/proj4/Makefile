@@ -2,8 +2,8 @@ CXX = g++
 CXX_FLAGS = -Wall -std=c++11
 
 TARGET = proj4.out
-HEADERS = proj4.h Car.h Sensor.h
-SRCS = proj4.cpp Car.cpp Sensor.cpp
+HEADERS = proj4.h Car.h Sensor.h Agency.h
+SRCS = proj4.cpp Car.cpp Sensor.cpp Agency.cpp
 
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
 

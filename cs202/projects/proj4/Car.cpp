@@ -121,3 +121,8 @@ void Car::print() {
 float Car::estimateCost(const int days) {
     return getFinalPrice() * days;
 };
+
+std::istream& operator>>(std::istream& is, Car& car) {
+    is >> car.m_year >> car.m_make >> car.m_model >> car.m_baseprice;
+    return is;
+};
