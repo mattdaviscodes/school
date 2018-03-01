@@ -22,6 +22,8 @@ Car::Car() {
 
     updatePrice();
 
+    m_sensorCount = 0;
+
 };
 Car::Car(const char *make, const char *model, const int year, const float baseprice, const bool available,
          Sensor *sensors) {
@@ -36,6 +38,7 @@ Car::Car(const char *make, const char *model, const int year, const float basepr
     // TODO: Make sure this doesn't break my shit
     for (int i = 0; i < MAX_SENSORS_PER_CAR; i++) {
         *sensor_arr++ = Sensor(*sensors++);
+        m_sensorCount++;
     }
 
     updatePrice();
@@ -58,6 +61,8 @@ Car::Car(Car & car) {
 
     updatePrice();
 
+    m_sensorCount = car.m_sensorCount;
+
 };
 
 // Getters
@@ -68,7 +73,8 @@ Sensor * Car::getSensors() {return m_sensors; };
 float Car::getBasePrice() {return m_baseprice; };
 float Car::getFinalPrice() { return m_finalprice; };
 bool Car::getAvailable() { return m_available; };
-char * Car::getOwner() {return m_owner; };
+char * Car::getOwner() { return m_owner; };
+int Car::getSensorCount() { return m_sensorCount; };
 
 // Setters
 void Car::setMake(const char * make) { myStringCopy(m_make, make); };
@@ -86,6 +92,7 @@ Car& Car::operator+(Sensor & sensor) {
     for (int i = 0; i < MAX_SENSORS_PER_CAR; i++, sensors_ptr++) {
         if (!myStringCompare(sensors_ptr->getType(), "none")) {
             sensors_ptr->setType(sensor.getType());
+            m_sensorCount++;
             updatePrice();
             break;
         };
@@ -94,6 +101,7 @@ Car& Car::operator+(Sensor & sensor) {
 };
 Car& Car::operator+(const char * owner) {
     setOwner(owner);
+    setAvailable(false);
     return *this;
 };
 ostream & operator<<(ostream & os, const Car & car) {
@@ -122,7 +130,74 @@ float Car::estimateCost(const int days) {
     return getFinalPrice() * days;
 };
 
+void Car::promptRent() {
+    int selection;
+
+    cout << "Would you like to rent this car?" << endl;
+    cout << "1) Yes" << endl;
+    cout << "2) No" << endl;
+
+    selection = getIntBetween(1, 2);
+
+    if (selection == 1) {
+        rent();
+    }
+}
+
+void Car::rent() {
+    char name[MAX_CSTRING_SIZE];
+
+    cout << "Please enter your first name: ";
+    cin >> name;
+
+    *this + name;
+}
+
 std::istream& operator>>(std::istream& is, Car& car) {
+    char c;
+    char sensor_str[MAX_CSTRING_SIZE];
+    char * ss_start = sensor_str, * ss_ptr = ss_start;
+    Sensor sensor;
+
     is >> car.m_year >> car.m_make >> car.m_model >> car.m_baseprice;
+
+    is.get();   // discard space before curly brace
+    is.get();   // discard opening curly brace
+
+    while (is >> noskipws >> c) {
+
+        if (c != ' ' && c != '}') {
+            *ss_ptr++ = c;
+        } else {
+            // Ensure null terminator set
+            *ss_ptr++ = '\0';
+
+            // Set sensor type and add to car if sensor read in
+            if (myStringLength(sensor_str)) {
+                sensor.setType(sensor_str);
+                car + sensor;
+            }
+
+            // Reset sensor string and pointer
+            *ss_start = '\0';
+            ss_ptr = ss_start;
+
+            // Stop reading at closing curly
+            if (c == '}') {
+                break;
+            }
+        }
+    }
+
+    is >> skipws >> car.m_available;
+
+    // Owner is only included if car is unavailable
+    if (!car.m_available) {
+        is >> car.m_owner;
+    }
+
+    // Update to final price in case no sensors were read in
+    car.updatePrice();
+
     return is;
 };

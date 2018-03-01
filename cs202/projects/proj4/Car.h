@@ -13,6 +13,8 @@ using namespace std;
 
 const int MAX_SENSORS_PER_CAR = 3;
 
+int getIntBetween(int min, int max);
+
 class Car {
 
     friend std::istream& operator>>(std::istream& is, Car& car);
@@ -20,7 +22,6 @@ class Car {
 public:
     // Constructors
     Car();
-
     Car(const char *make, const char *model, const int year, const float baseprice, const bool available,
         Sensor *sensors);
     Car(Car & car);
@@ -34,6 +35,7 @@ public:
     float getFinalPrice();
     bool getAvailable();
     char * getOwner();
+    int getSensorCount();
 
     // Setters
     void setMake(const char * make);
@@ -52,6 +54,8 @@ public:
     float updatePrice();
     void print();
     float estimateCost(const int days);
+    void promptRent();
+    void rent();
 
 private:
     char m_make[MAX_CSTRING_SIZE];
@@ -62,6 +66,7 @@ private:
     float m_finalprice;
     bool m_available;
     char m_owner[MAX_CSTRING_SIZE];
+    int m_sensorCount;
 };
 
 

@@ -15,7 +15,8 @@ const int DEFAULT_ZIPCODE = 00000;
 
 class Agency {
 
-    friend std::istream& operator>>(std::istream& is, Agency& agency);
+    friend std::istream & operator>>(std::istream& is, Agency& agency);
+    friend std::ostream & operator<<(std::ostream & os, Agency & agency);
 
     public:
         Agency();
@@ -34,6 +35,10 @@ class Agency {
 
         // Other
         void readAllData();
+        void printAllData();
+        void printSensorCounts();
+        void findMostExpensiveCar();
+        void printAvailableCars();
 
 
     private:

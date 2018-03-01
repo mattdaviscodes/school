@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include <cstring> // TODO REMOVE
+#include <fstream>
 
 #include "proj4.h"
 #include "Sensor.h"
@@ -12,12 +12,60 @@
 
 using namespace std;
 
+// Prototypes
+int menu();
+int getIntBetween(int min, int max);
+
 int main() {
-    char s[100];
-    cin >> s;
-    cout << s << endl;
+    Agency agency;
+    ifstream inf;
+    bool exit = false;
+    int selection;
+
+    do {
+        selection = menu();
+        switch (selection) {
+            case 1: agency.readAllData(); break;
+            case 2: agency.printAllData(); break;
+            case 3: agency.printSensorCounts(); break;
+            case 4: agency.findMostExpensiveCar(); break;
+            case 5: exit = true; break;
+        }
+    } while (!exit);
 
     return 0;
+}
+
+/*
+* Display a menu to the user and prompt user for selection
+*/
+int menu() {
+    cout << "What would you like to do?" << endl;
+    cout << "1) Read all data from file" << endl;
+    cout << "2) Show all data" << endl;
+    cout << "3) Show total sensor counts" << endl;
+    cout << "4) Find most expensive car" << endl;
+    cout << "5) Exit" << endl;
+
+    return getIntBetween(1, 5);
+}
+
+/*
+ * Prompt user for an integer between min and max, inclusive.
+ * NOTE: This function completely blows up user enters non-integer
+ */
+int getIntBetween(int min, int max)
+{
+    int selection;
+
+    // Prompt until valid selection entered
+    do {
+        cout << "Enter selection (" << min << "-" << max << "): ";
+        cin >> selection;   // TODO: Prevent non-integer input infinite loop
+
+    } while (selection < min || selection > max);
+
+    return selection;
 }
 
 /*
