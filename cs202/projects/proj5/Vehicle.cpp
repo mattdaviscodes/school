@@ -41,11 +41,6 @@ int Vehicle::getVIN() const {
     return m_vin;
 }
 
-std::ostream &operator<<(std::ostream &os, const Vehicle &vehicle) {
-    std::cout << "Vehicle #vin @ [" << vehicle.m_lla[0] << ", " << vehicle.m_lla[1] << ", " << vehicle.m_lla[2] << "]"
-              << std::endl;
-}
-
 int Vehicle::getIdgen() {
     return s_idgen;
 }
@@ -74,5 +69,11 @@ void Vehicle::setLLA(const int lat, const int lng, const int alt) {
 }
 
 void Vehicle::move(const float *lla) {
-    std::cout << "Vehicle #vin: CANNOT MOVE - I DON'T KNOW HOW" << std::endl;
+    std::cout << "Vehicle #" << m_vin << ": CANNOT MOVE - I DON'T KNOW HOW" << std::endl;
+}
+
+std::ostream &operator<<(std::ostream &os, const Vehicle &vehicle) {
+    std::cout << "Vehicle # << " << vehicle.m_vin << " @ [" << vehicle.m_lla[0] << ", " << vehicle.m_lla[1] << ", " << vehicle.m_lla[2] << "]"
+              << std::endl;
+    return os;
 }

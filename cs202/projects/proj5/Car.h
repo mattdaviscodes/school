@@ -10,9 +10,11 @@
 
 const int MAX_CSTRING_SIZE = 256;
 
+const int DEFAULT_THROTTLE = 0;
+
 class Car : public Vehicle {
 
-    friend std::ostream & operator<<(std::ostream & os, const Car & car);
+    friend std::ostream &operator<<(std::ostream &os, const Car &car);
 
 public:
     Car();
@@ -21,9 +23,9 @@ public:
 
     ~Car();
 
-    Car &operator=(const Car &car);
+    Car &operator=(const Car &rhs);
 
-    char *getPlates() const;
+    const char *getPlates() const;
     int getThrottle() const;
 
     void setPlates(const char *plates);
@@ -32,8 +34,6 @@ public:
     void drive(const int throttle);
 
     void move(const float *lla);
-
-protected:
 
 private:
     char m_plates[MAX_CSTRING_SIZE];
