@@ -24,14 +24,14 @@ public:
 
     Vehicle &operator=(const Vehicle &rhs);
 
-    float *getLLA() const;
+    const float *getLLA() const;
     int getVIN() const;
 
     static int getIdgen();
+    static bool validateVIN(const int vin);
 
     void setLLA(const float *lla);
     void setLLA(const int lat, const int lng, const int alt);
-    void setVIN(const int vin);
 
     void move(const float *lla);
 
