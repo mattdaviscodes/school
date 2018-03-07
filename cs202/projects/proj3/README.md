@@ -3,7 +3,7 @@ Submitted: 2/13/18
 
 ### Purpose
 This program allows users to input structured rental car and rental
-agency data from a [file](.Agencies.txt) into an array of RentalAgency
+agency data from a [file](Agencies.txt) into an array of RentalAgency
 structs. Each struct contains some descriptive information about the
 agency, as well as an array of RentalCar class objects which contain
 the actual data about the car -- make, model, year, etc.
