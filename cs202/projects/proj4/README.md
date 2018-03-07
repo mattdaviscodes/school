@@ -3,7 +3,7 @@ Submitted: 2/28/18
 
 ### Purpose
 This program allows users to input structured rental car and rental
-agency data from a [file](.HighTechAgency.txt). This file contains
+agency data from a [file](HighTechAgency.txt). This file contains
 a set number of cars. Each car may contain up to three "high-tech"
 addons. These are stored on the Car object in an array of Sensor
 objects.

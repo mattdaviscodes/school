@@ -3,7 +3,7 @@ Submitted: 2/5/18
 
 ### Purpose
 This program allows the user to input structured rental car data from
-a [file](.Cars.txt) into an array of structs. Each struct contains
+a [file](Cars.txt) into an array of structs. Each struct contains
 the car's make and model, year, price to rent, and availability. Users
 are then presented with a menu of possible actions to take, such as
 sort cars by price, show available cars, and rent a car.

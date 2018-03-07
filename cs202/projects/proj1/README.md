@@ -3,7 +3,7 @@ Submitted: 1/29/18
 
 ### Purpose
 This program allows the user to specify the names of input and output text files which will be read from and
-written to, respectively. The input file -- [Names.txt](./Names.txt), for example -- contains a list of names,
+written to, respectively. The input file -- [Names.txt](Names.txt), for example -- contains a list of names,
 delimited by newline characters. The program reads these names into a two-dimensional array and prints the array
 to the console. Then a copy of the array is sorted alphabetically and *this* array is printed to the console,
 preceeded by each name's original index.
