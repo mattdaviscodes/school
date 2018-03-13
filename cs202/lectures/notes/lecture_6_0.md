@@ -3,14 +3,6 @@ Date: 3/6/17 | [Slides](../CS202_Lecture13_[C++_Classes-Polymorphism_(Pt.1)]_03.
 
 [Prev](./lecture_5_1.md) | [Next](./lecture_6_1.md)
 
-## Polymorphism Concepts and Practice
-
-## Polymorphism in Inheritance
-
-## `virtual` Class Methods
-
-## Late Binding
-
 ## Polymorphism
 **Polymorphism** means "the ability to take many forms." Allows a single
 behavior to take on many type-dependent forms. Grants an ability to
