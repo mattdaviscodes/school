@@ -1,5 +1,5 @@
 # CS 202 - Lecture 7.0 - C++ Classes - Midterm Recap
-Date: 3/13/17 | [Slides](../CS202_Lecture15_[C++_Classes-Midterm_Recapitulation]_03.13.pdf)
+Date: 3/13/18 | [Slides](../CS202_Lecture15_[C++_Classes-Midterm_Recapitulation]_03.13.pdf)
 
 [Prev](./lecture_6_1.md) | [Next](./lecture_7_1.md)
 

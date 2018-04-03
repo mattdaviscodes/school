@@ -1,5 +1,5 @@
 # CS 202 - Lecture[0][0]
-Date: 2/1/17 | [Slides](../slides/CS202_Lecture4_[C++_Structs]_02.01.pdf)
+Date: 2/1/18 | [Slides](../slides/CS202_Lecture4_[C++_Structs]_02.01.pdf)
 
 ## Structs
 A collection of related data items. Different types allowed. Structs

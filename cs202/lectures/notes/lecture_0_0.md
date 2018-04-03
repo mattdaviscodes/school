@@ -1,5 +1,5 @@
 # CS 202 - Lecture[0][0]
-Date: 1/23/17
+Date: 1/23/18
 
 ## Projects
 Project due every week. Projects are assigned on Thursdays. Due date is

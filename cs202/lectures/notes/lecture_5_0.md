@@ -1,5 +1,5 @@
 # CS 202 - Lecture 5.0 - C++ Classes - Inheritance (part 1)
-Date: 2/27/17 | [Slides](../slides/CS202_Lecture11_[C++_Classes-Inheritance_(Pt.1)]_02.27.pdf)
+Date: 2/27/1 | [Slides](../slides/CS202_Lecture11_[C++_Classes-Inheritance_(Pt.1)]_02.27.pdf)
 
 [Prev](./lecture_4_1.md) | [Next](./lecture_5_1.md)
 

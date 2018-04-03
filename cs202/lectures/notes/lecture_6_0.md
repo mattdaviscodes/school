@@ -1,5 +1,5 @@
 # CS 202 - Lecture 6.0 - C++ Classes - Polymorphism (part 1)
-Date: 3/6/17 | [Slides](../CS202_Lecture13_[C++_Classes-Polymorphism_(Pt.1)]_03.06.pdf)
+Date: 3/6/18 | [Slides](../CS202_Lecture13_[C++_Classes-Polymorphism_(Pt.1)]_03.06.pdf)
 
 [Prev](./lecture_5_1.md) | [Next](./lecture_6_1.md)
 

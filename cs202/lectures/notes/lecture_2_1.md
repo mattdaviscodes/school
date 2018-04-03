@@ -1,5 +1,5 @@
 # CS 202 - Lecture[2][1] - C++ Classes - Constructors (part 1)
-Date: 2/8/17 | [Slides](../slides/CS202_Lecture6_[C++_Classes-Constructors_(Pt.1)]_02.08.pdf)
+Date: 2/8/18 | [Slides](../slides/CS202_Lecture6_[C++_Classes-Constructors_(Pt.1)]_02.08.pdf)
 
 ### Class Cheatsheet
 See slides for in-depth extended example of class declaration and

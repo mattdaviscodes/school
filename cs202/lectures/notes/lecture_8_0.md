@@ -1,5 +1,5 @@
 # CS 202 - Lecture 8.0 - Dynamic Memory (part 1)
-Date: 3/27/17 | [Slides](../CS202_Lecture16_[Dynamic_Memory_(Pt.1)]_03.27.pdf)
+Date: 3/27/18 | [Slides](../CS202_Lecture16_[Dynamic_Memory_(Pt.1)]_03.27.pdf)
 
 [Prev](./lecture_7_0.md) | [Next](./lecture_8_1.md)
 

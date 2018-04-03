@@ -1,5 +1,5 @@
 # CS 202 - Lecture[3][1] - C++ Classes - Operators (part 1)
-Date: 2/15/17 | [Slides](../slides/CS202_Lecture8_[C++_Classes-Operator(s)_(Pt.1)]_02.15.pdf)
+Date: 2/15/18 | [Slides](../slides/CS202_Lecture8_[C++_Classes-Operator(s)_(Pt.1)]_02.15.pdf)
 
 [Prev](./lecture_3_0.md) | [Next](./lecture_4_0.md)
 
