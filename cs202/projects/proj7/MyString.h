@@ -10,6 +10,7 @@
 #define MYSTRING_H_
 
 #include <iostream>
+#include <cstring>
 
 class MyString{
 

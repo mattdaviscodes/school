@@ -1,48 +1,49 @@
-# Project 6
-Submitted: 3/17/18
+# Project 7
+Submitted: 4/4/18
 
 ### Purpose
-For this project, we are given a complete primary source file
-[proj6.cpp](proj6.cpp) which will act as a test driver for the project.
-The source file contains a number of references to unimplemented
-`Vehicle` and `Car` classes. These classes exhibit common inheritance
-and polymorphic functionality, which is explored throughout the
-project.
+The purpose of this project was to gain hands-on experience dealing with
+dynamic memory by creating a custom implementation of the string class.
+We were given a complete [class header](MyString.h) and were required
+to write the class's implementation, as well as a test program to
+flex the class a little.
+
+### Design Choices
+The project was fairly straightforward, so there wasn't much room for
+creative thinking. The only significant choice I had to make was how
+the class would choose how much memory to allocate. Originally, I'd
+planned on using some sort of chunking algorithm which would have a
+chunk size -- 50 characters, for example -- and would allocate the
+fewest chunks required to fit the string. This seemed unnecessarily
+rigid, and I had no qualitative way to decide how big the chunks should
+be.
+
+Then I thought I'd follow a similar process, but use an increasing chunk
+size algorithm. Something like starting at 2^1, check if an allocation
+of that size would fit the input. If not, increase by a power of 2.
+Repeat until the input fits. However, this also felt sort of pointless.
+
+Finally, I decided to just make the allocation fit the input exactly.
+This class is limited enough in scope that I think this naive approach
+makes sense. If the class was meant to handle more intense manipulation,
+that probably wouldn't work, and would be an obvious place for
+optimization.
 
 ### Output Observations
-Once the two required classes have been implemented, we are required
-to run the test driver and observe the output.
 
-#### Constructor Observations
-- The Vehicle (parent) constructor is called before the Car (child)
-constructor. This is as expected. Both use the default constructor,
-even though no explicit call to `Vehicle::Vehicle()` is ever made.
-- The parameterized constructors are called in the same order: parent
-then child. However, this time we used an explicit call to the parent
-class.
-- The `Car`'s copy constructor calls Vehicle's base constructor. This is
-surprising to me, although I don't know how else it could work.
-- `Car`'s assignment operator never calls Vehicle's assignment operator.
-Again, this is logical, but not what I expected. The assignment often
-*feels* like another constructor, but it is not. This object had already
-been constructed, and now is just being altered by the assignment.
-
-#### Polymorphism Observations
-- Calling `Car::move()` does not call `Vehicle::move()` as expected
-- Calling `Vehicle`'s insertion operator overload does not interact
-with `Car` at all. This makes sense -- we didn't write any insertion
-operator code for `Car`.
-- Calling `move()` via a `Vehicle` pointer acts as expected - `Car::move()`
-is called and `Vehicle::move()` is not. This is because we specified that
-all children of `Vehicle` *must* override `move()`.
-- Calling the insertion operator overload on a `Vehicle` class pointer
-does not interact with `Car`. By itself, this seems obvious, but next
-to the `move()` call it is interesting. Beacuse `move()` is defined as
-`virtual` and the insertion operator overload is not, it seems like
-we might run some `Car` code. This is not the case.
-
-#### Destructor Obvservations
-- The only objects ever created were of type `Car`. When these objects
-are destroyed, they first destroy themselves -- the derived class --
-then call the destructors of the parent class. It's interesting that
-construction flows downward, but destruction flows upward.
+- Constructors behave as expected. The default constructor is all but
+useless, though. Attempting to `cout` an object created with the default
+constructor will result in a seg fault.
+- Destructor works well, farming out all deallocation work to
+`buffer_deallocate()`. This is good from a DRY standpoint, but violates
+Chris's recommendation in lecture to avoid unnecessarily setting pointers
+to null if they're being destroyed anyway.
+- `size()` and `length()` do as they should, although they will nearly
+always be different only by 1, since allocation happens according to
+the input string, +1 char for the null terminator. The only time this
+is not true is if we use the bracket notation to prematurely terminate
+the string (which happens in this test driver)
+- `c_str()` good, although I'm not positive I wrote this correctly. I
+just return a reference to `m_buffer`. The method was expected to return
+a pointer, and I couldn't create a local var and return a pointer to
+that. I think this is the only other option.
