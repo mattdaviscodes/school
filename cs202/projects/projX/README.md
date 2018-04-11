@@ -1,49 +1,83 @@
-# Project 7
-Submitted: 4/4/18
+# Project X
+Submitted: 4/10/18
 
 ### Purpose
-The purpose of this project was to gain hands-on experience dealing with
-dynamic memory by creating a custom implementation of the string class.
-We were given a complete [class header](MyString.h) and were required
-to write the class's implementation, as well as a test program to
-flex the class a little.
+The purpose of this extra-credit project was to further explore the
+possibilities introduced by dynamic memory allocation. We wrote a
+clone of C++11's `shared_pointer` class called `SmartPtr`. Our class
+encapsulated a pointer to another custom data type (aptly named
+`DataType`) and provided functionality very close to that of a standard
+C++ pointer by overriding the star and arrow operators.
 
 ### Design Choices
-The project was fairly straightforward, so there wasn't much room for
-creative thinking. The only significant choice I had to make was how
-the class would choose how much memory to allocate. Originally, I'd
-planned on using some sort of chunking algorithm which would have a
-chunk size -- 50 characters, for example -- and would allocate the
-fewest chunks required to fit the string. This seemed unnecessarily
-rigid, and I had no qualitative way to decide how big the chunks should
-be.
-
-Then I thought I'd follow a similar process, but use an increasing chunk
-size algorithm. Something like starting at 2^1, check if an allocation
-of that size would fit the input. If not, increase by a power of 2.
-Repeat until the input fits. However, this also felt sort of pointless.
-
-Finally, I decided to just make the allocation fit the input exactly.
-This class is limited enough in scope that I think this naive approach
-makes sense. If the class was meant to handle more intense manipulation,
-that probably wouldn't work, and would be an obvious place for
-optimization.
+As with Project 7, there was very little room for improvisation here,
+as we were given a completed header file and asked to write the
+accompanying implementation. If, however, I had been asked to write
+the definition also, the class could have been made more robust by
+allowing the pointer to point to any type of data, not just `DataType`
+objects.
 
 ### Output Observations
 
-- Constructors behave as expected. The default constructor is all but
-useless, though. Attempting to `cout` an object created with the default
-constructor will result in a seg fault.
-- Destructor works well, farming out all deallocation work to
-`buffer_deallocate()`. This is good from a DRY standpoint, but violates
-Chris's recommendation in lecture to avoid unnecessarily setting pointers
-to null if they're being destroyed anyway.
-- `size()` and `length()` do as they should, although they will nearly
-always be different only by 1, since allocation happens according to
-the input string, +1 char for the null terminator. The only time this
-is not true is if we use the bracket notation to prematurely terminate
-the string (which happens in this test driver)
-- `c_str()` good, although I'm not positive I wrote this correctly. I
-just return a reference to `m_buffer`. The method was expected to return
-a pointer, and I couldn't create a local var and return a pointer to
-that. I think this is the only other option.
+#### Constructors
+- Default ctor behaved as expected. Then things got PRETTY DANG WEIRD.
+- In order to test the paramaterized ctor's functionality, I attempted
+calling this code:
+    ```cpp
+    DataType * dtp1 = new DataType;
+    SmartPtr sp2(dtp1);
+    SmartPtr sp3(dtp1);
+    ```
+    The construction occurred as expected, but when `sp3` was destroyed,
+    the program threw an error. Something about the freed memory had
+    not been allocated. It took some debugging, but I learned that the
+    reason for this is that `SmartPtr`'s parameterized constructor
+    creates a new m_refcount each time it is called, regardless of any
+    other pointers pointing to the passed-in `DataType`. This can lead
+    to some trouble though, because when a `SmartPtr` is destroyed, it
+    also destroys its m_refcount memory if it *believes* nothing else
+    is pointing to that data. The copy ctor can handle this appropriately,
+    because the newly-created object is told implicitly that another
+    `SmartPtr` already exists that is pointing to the data. When calling
+    the parametrized ctor on a raw pointer, however, the `SmartPtr` has
+    no way of knowing whether or not another ptr already exists. So at
+    program close, `sp2` deletes the memory also referenced by `sp3`,
+    then `sp3` attempts to delete the already-deleted memory also,
+    causing an error.
+
+    More info here: https://stackoverflow.com/a/1051468/8290310
+- Copy ctor works correctly. Nothing to see here.
+
+#### Assignment
+- At first, I attempted to use some code like this:
+    ```cpp
+    SmartPtr sp5 = sp2;
+    ```
+    I was surprised to see that this line of code calls `SmartPtr`'s
+    copy ctor, not the default ctor then assignment operator as I
+    expected. This has something to do with **copy-assigment** and
+    maybe **elision**, although I'm not sure about the latter. This
+    is the sort of thing that experience C++ devs probably side-step
+    without even thinking about it, but newbies have a ton of trouble
+    with. I don't imagine this will be the last time it trips me up.
+
+#### Star and Arrow Operators
+- Not much exciting here. The operators performed as expected, providing
+an interface identical to that of a base C++ pointer, assuming I didn't
+try anything out of the ordinary. The star operator returned a reference
+to the underlying `DataPoint` while the arrow operator returned the
+raw pointer.
+
+#### Destruction
+- If left alone, all objects destroy themselves in reverse-instantiation
+order. This is the expected functionality.
+- As the objects created via the copy ctor are destroyed, their
+m_refcounts were also decremented as expected.
+- I also experimented with calling the destructor explicitly on one
+object, producing a surprising result. The object was destroyed as
+expected, but as the program closed, an error was thrown saying that
+I had attempted to destroy an already-destroyed object. The object
+I'd manually destroyed was also being destroyed by the compiler as it
+flowed out of scope. The most prevalent advice I saw was to just avoid
+calling destructors explicitly to avoid this problem:
+https://stackoverflow.com/a/11884236/8290310

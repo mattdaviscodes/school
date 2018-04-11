@@ -1,12 +1,12 @@
 CXX = g++
 CXX_FLAGS = -Wall -std=c++11
 
-TARGET = proj7.out
-HEADERS = MyString.h
-SRCS = proj7.cpp MyString.cpp
+TARGET = projX.out
+HEADERS = DataType.h SmartPtr.h
+SRCS = projX.cpp DataType.cpp SmartPtr.cpp
 
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
-# OBJECTS == proj7.o MyString.o
+# OBJECTS == projX.o DataType.o SmartPtr.o
 
 #Rule that states that default all and clean are make commands and not associated with any files
 .PHONY: default all clean
