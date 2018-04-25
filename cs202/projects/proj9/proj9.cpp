@@ -61,4 +61,17 @@ int main() {
               << "=========" << std::endl;
     ArrayQueue aq_copy(aq_param);
     std::cout << aq_copy << std::endl << std::endl;
+
+    std::cout << "ASSIGNMENT OPERATOR\n"
+              << "===================" << std::endl;
+    ArrayQueue aq_assign;
+    aq_assign = aq_param;
+    std::cout << aq_assign << std::endl << std::endl;
+
+    std::cout << "PUSH AND POP\n"
+              << "============" << std::endl;
+    aq_copy.push(dt2);
+    std::cout << aq_copy << std::endl << std::endl;
+    aq_assign.pop();
+    std::cout << aq_assign << std::endl << std::endl;
 }
