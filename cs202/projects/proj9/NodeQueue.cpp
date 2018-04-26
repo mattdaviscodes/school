@@ -1,14 +1,22 @@
-//
-// Created by Matthew Davis on 4/23/18.
-//
+/**
+ * @brief  CS-202 Project 9 - NodeQueue class implementation
+ * @Author Matt Davis (mattdavis@nevada.unr.edu)
+ * @date   4/25/18
+ */
 
 #include "NodeQueue.h"
 
+/**
+ * Default constructor for NodeQueue
+ */
 NodeQueue::NodeQueue() {
     m_front = NULL;
     m_back = NULL;
 }
 
+/**
+ * Parameterized constructor for NodeQueue
+ */
 NodeQueue::NodeQueue(size_t size, const DataType &value) {
     m_front = NULL;
     m_back = NULL;
@@ -18,6 +26,9 @@ NodeQueue::NodeQueue(size_t size, const DataType &value) {
     }
 }
 
+/**
+ * Copy constructor for NodeQueue
+ */
 NodeQueue::NodeQueue(const NodeQueue &other) {
     Node * curr = other.m_front;
 
@@ -30,6 +41,11 @@ NodeQueue::NodeQueue(const NodeQueue &other) {
     }
 }
 
+/**
+ * Destructor for NodeQueue
+ *
+ * Handles freeing of dynamically allocated memory
+ */
 NodeQueue::~NodeQueue() {
     Node *curr = m_front;
     Node *next = NULL;
@@ -41,6 +57,9 @@ NodeQueue::~NodeQueue() {
     }
 }
 
+/**
+ * Assignment operator overload for NodeQueue
+ */
 NodeQueue &NodeQueue::operator=(const NodeQueue &rhs) {
     if (this != &rhs) {
 
@@ -62,22 +81,37 @@ NodeQueue &NodeQueue::operator=(const NodeQueue &rhs) {
     return *this;
 }
 
+/**
+ * Get DataType obj pointed by m_front
+ */
 DataType &NodeQueue::front() {
     return m_front->getData();
 }
 
+/**
+ * Get DataType obj pointed by m_front
+ */
 const DataType &NodeQueue::front() const {
     return m_front->getData();
 }
 
+/**
+ * Get DataType obj pointed by m_back
+ */
 DataType &NodeQueue::back() {
     return m_back->getData();
 }
 
+/**
+ * Get DataType obj pointed by m_back
+ */
 const DataType &NodeQueue::back() const {
     return m_back->getData();
 }
 
+/**
+ * Add a new node to the back of the queue
+ */
 void NodeQueue::push(const DataType &value) {
     Node * newNode = new Node(value);
 
@@ -91,6 +125,9 @@ void NodeQueue::push(const DataType &value) {
     m_back = newNode;
 }
 
+/**
+ * Remove a node from the front of the queue
+ */
 void NodeQueue::pop() {
     if (size() == 1) {
         // Popping from a 1-element queue
@@ -103,6 +140,9 @@ void NodeQueue::pop() {
     }
 }
 
+/**
+ * Get the total number of elements in the queue
+ */
 size_t NodeQueue::size() const {
     Node * curr = m_front;
 
@@ -115,14 +155,27 @@ size_t NodeQueue::size() const {
     return i;
 }
 
+/**
+ * Is queue empty?
+ */
 bool NodeQueue::empty() const {
     return m_front == NULL;
 }
 
+/**
+ * Is queue full?
+ *
+ * NOTE: This method is only here to keep consistency with the
+ * array-based implementation. A node-based queue has no member
+ * limit, so this always returns false.
+ */
 bool NodeQueue::full() const {
     return false;
 }
 
+/**
+ * Free all dynamically allocated memory and reset queue to empty state
+ */
 void NodeQueue::clear() {
     Node * curr = m_front;
     Node * tempNode = NULL;
@@ -137,6 +190,9 @@ void NodeQueue::clear() {
     m_back = NULL;
 }
 
+/**
+ * Print contents of queue to ostream
+ */
 void NodeQueue::serialize(std::ostream &os) const {
     Node *curr = m_front;
     int i = 0;
@@ -152,6 +208,9 @@ void NodeQueue::serialize(std::ostream &os) const {
     }
 }
 
+/**
+ * Print contents of queue to ostream
+ */
 std::ostream &operator<<(std::ostream &os, const NodeQueue &nodeQueue) {
     nodeQueue.serialize(os);
     return os;

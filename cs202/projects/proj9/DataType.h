@@ -1,3 +1,9 @@
+/**
+ * @brief  CS-202 Project 9 - DataType class definition
+ * @Author Matt Davis (mattdavis@nevada.unr.edu)
+ * @date   4/25/18
+ */
+
 #ifndef DATATYPE_H_
 #define DATATYPE_H_
 

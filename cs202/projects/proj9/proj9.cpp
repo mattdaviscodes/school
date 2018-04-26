@@ -1,3 +1,9 @@
+/**
+ * @brief  CS-202 Project 9 - Test driver for NodeQueue and ArrayQueue clases
+ * @Author Matt Davis (mattdavis@nevada.unr.edu)
+ * @date   4/25/18
+ */
+
 #include <iostream>
 
 #include "ArrayQueue.h"

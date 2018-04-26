@@ -1,6 +1,8 @@
-//
-// Created by Matthew Davis on 4/23/18.
-//
+/**
+ * @brief  CS-202 Project 9 - ArrayQueue class definition
+ * @Author Matt Davis (mattdavis@nevada.unr.edu)
+ * @date   4/25/18
+ */
 
 #ifndef SCHOOL_ARRAYQUEUE_H
 #define SCHOOL_ARRAYQUEUE_H
