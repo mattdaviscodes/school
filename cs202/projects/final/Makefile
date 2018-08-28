@@ -1,7 +1,7 @@
-TARGET = proj8
+TARGET = final
 LIBS = -lm  #List of external libraries required to link against (here m is the math Library, just a placeholder)
-HEADERS = DataType.h ArrayList.h NodeList.h  #List of all header files
-SRCS = proj8.cpp DataType.cpp ArrayList.cpp NodeList.cpp #List of all source files
+HEADERS = Cover.h Client.h Book.h  #List of all header files
+SRCS = final.cpp Cover.cpp Client.cpp Book.cpp #List of all source files
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))  #Creates a list of object files (.o) for every entry under SRCS (source files)
 CXX = g++ #compiler command to be used
 CXX_FLAGS = -Wall -std=c++11 #compilation flags to be used (here std=c++11 is just for reference, not necessary)
