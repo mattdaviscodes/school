@@ -1,17 +1,16 @@
-# CS 302 - Lecture 0.0 - Intro
-Date: 8/27/18 | [Slides]()
+# CS 302 - Lecture 0.1 - OO Concepts, Designing ADTs, Classes, Recursion
+Date: 8/29/18 | [Slides]()
 
-Prev | [Next](./lecture_0_1.md)
+[Prev](./lecture_0_0.md) | [Next](./lecture_1_0.md)
 
-Will probably use WebCampus less. Grades posted there, but it looks
-like class data is here: https://www.autonomousrobotslab.com/cs302---data-structures.html
+Virtual Box Password: CS302 (or cs302)
 
-Ubuntu 16.4, class will provide virtual box. Must make sure to use
-the correct compiler which will be bundled with provided VM.
+He said something about enabling virtualization in BIOS. Like I fucking
+know what that means.
 
-Should go over Google C++ Style: https://google.github.io/styleguide/cppguide.html
+Homework #1 due Monday 9/10
+
+### Object-Oriented Solutions
 
 
-### Syllabus
 
-### Style

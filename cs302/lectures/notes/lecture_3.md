@@ -1,16 +1,8 @@
-# CS 302 - Lecture 0.1 - OO Concepts, Designing ADTs, Classes, Recursion
-Date: 8/29/18 | [Slides]()
+# CS 302 - Lecture 3 -
+Date: 9/5/18
 
-[Prev](./lecture_0_0.md) | [Next](./lecture_1_0.md)
+[Prev](./lecture_0_1.md) | [Next](./lecture_4.md)
 
-Virtual Box Password: CS302 (or cs302)
-
-He said something about enabling virtualization in BIOS. Like I fucking
-know what that means.
-
-Homework #1 due Monday 9/10
-
-### Object-Oriented Solutions
 
 
 
