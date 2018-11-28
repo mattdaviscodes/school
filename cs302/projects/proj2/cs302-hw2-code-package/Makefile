@@ -1,9 +1,9 @@
 CXX = g++
 CXX_FLAGS = -Wall -std=c++11
 
-TARGET = driver
-HEADERS = BagInterface.h ArrayBag.h Node.h LinkedBag.h
-SRCS = driver.cpp
+TARGET = test6
+HEADERS = Stack.h StackArray.h StackLinked.h
+SRCS = test6.cpp
 
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
 

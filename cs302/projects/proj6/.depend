@@ -1,0 +1,9 @@
+BinaryNode.o: BinaryNode.h
+BinaryNodeTree.o: BinaryNodeTree.h BinaryTreeInterface.h \
+ NotFoundException.h BinaryNode.h PrecondViolatedExcept.h
+BinarySearchTree.o: BinarySearchTree.h BinaryTreeInterface.h \
+ NotFoundException.h BinaryNode.h BinaryNodeTree.h \
+ PrecondViolatedExcept.h
+BinaryTreeInterface.o: BinaryTreeInterface.h NotFoundException.h
+NotFoundException.o: NotFoundException.h
+PrecondViolatedExcept.o: PrecondViolatedExcept.h

@@ -1,0 +1,6 @@
+LinkedSortedList.o: LinkedSortedList.h SortedListInterface.h Node.h \
+ PrecondViolatedExcept.h
+Node.o: Node.h
+PrecondViolatedExcept.o: PrecondViolatedExcept.h
+SL_PriorityQueue.o: SL_PriorityQueue.h LinkedSortedList.h \
+ SortedListInterface.h Node.h PrecondViolatedExcept.h
