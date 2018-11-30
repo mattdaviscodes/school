@@ -1,190 +1,154 @@
-/**
- * Link-based implementation of the ADT binary search tree.
- * @file BinarySearchTree.h
-*/
+/** Link-based implementation of the ADT binary search tree.
+@file BinarySearchTree.h */
+
 #ifndef BINARY_SEARCH_TREE_
 #define BINARY_SEARCH_TREE_
 
-#include "BinaryTreeInterface.h"
 #include "BinaryNode.h"
-#include "BinaryNodeTree.h"
-#include "NotFoundException.h"
-#include "PrecondViolatedExcept.h"
+#include <algorithm>
 #include <memory>
+#include <iostream>
 
 template<class ItemType>
-class BinarySearchTree : public BinaryNodeTree<ItemType> {
+class BinarySearchTree
+{
 private:
-    std::shared_ptr <BinaryNode<ItemType>> rootPtr;
+    BinaryNode<ItemType> *rootPtr;
 
 protected:
     //------------------------------------------------------------
     // Protected Utility Methods Section:
     // Recursive helper methods for the public methods.
     //------------------------------------------------------------
-    // Places a given new node at its proper position in this binary// search tree.
-    auto placeNode(std::shared_ptr <BinaryNode<ItemType>> subTreePtr,
-                   std::shared_ptr <BinaryNode<ItemType>> newNode);
+    // Places a given new node at its proper position in this binary
+    // search tree.
+    BinaryNode<ItemType> *placeNode(BinaryNode<ItemType> *subTreePtr, BinaryNode<ItemType> *newNode);
 
-    // Removes the given target value from the tree while maintaining a
-    // binary search tree.
-    BinaryNode<ItemType>* removeValue(std::shared_ptr <BinaryNode<ItemType>> subTreePtr,
-                     const ItemType target,
-                     bool &isSuccessful) override;
+    int getHeightFromNode(BinaryNode<ItemType> *subTreePtr) const;
 
-    // Removes a given node from a tree while maintaining a binary search tree.
-    auto removeNode(std::shared_ptr <BinaryNode<ItemType>> nodePtr);
-
-    // Removes the leftmost node in the left subtree of the node
-    // pointed to by nodePtr.
-    // Sets inorderSuccessor to the value in this node.
-    // Returns a pointer to the revised subtree.
-    auto removeLeftmostNode(std::shared_ptr <BinaryNode<ItemType>> subTreePtr,
-                            ItemType &inorderSuccessor);
-
-    // Returns a pointer to the node containing the given value,
-    // or nullptr if not found.
-    auto findNode(std::shared_ptr <BinaryNode<ItemType>> treePtr,
-                  const ItemType &target) const;
+    void preorderTraverseFromNode(BinaryNode<ItemType> *subTreePtr) const;
+    void inorderTraverseFromNode(BinaryNode<ItemType> *subTreePtr) const;
+    void postorderTraverseFromNode(BinaryNode<ItemType> *subTreePtr) const;
 
 public:
     //------------------------------------------------------------
     // Constructor and Destructor Section.
     //------------------------------------------------------------
     BinarySearchTree();
-    BinarySearchTree(const ItemType &rootItem);
-    BinarySearchTree(const BinarySearchTree<ItemType> &tree);
-    virtual ~BinarySearchTree();
 
     //------------------------------------------------------------
     // Public Methods Section.
     //------------------------------------------------------------
-    bool isEmpty() const;
     int getHeight() const;
-    int getNumberOfNodes() const;
 
-    ItemType getRootData() const throw(PrecondViolatedExcept);
-    bool setRootData(const ItemType &newData);
-
-    bool add(const ItemType &newEntry);
-    bool remove(const ItemType &target);
-    void clear();
-
-    ItemType getEntry(const ItemType &anEntry) const throw(NotFoundException);
-    bool contains(const ItemType &anEntry) const;
+    bool add(const ItemType& newEntry);
 
     //------------------------------------------------------------
     // Public Traversals Section.
     //------------------------------------------------------------
-    void preorderTraverse(void visit(ItemType &)) const;
-    void inorderTraverse(void visit(ItemType &)) const;
-    void postorderTraverse(void visit(ItemType &)) const;
-
-    //------------------------------------------------------------
-    // Overloaded Operator Section.
-    //------------------------------------------------------------
-    BinarySearchTree<ItemType> &
-    operator=(const BinarySearchTree<ItemType> &rightHandSide);
+    void preorderTraverse() const;
+    void inorderTraverse() const;
+    void postorderTraverse() const;
 }; // end BinarySearchTree
 
 template<class ItemType>
-BinarySearchTree<ItemType>::BinarySearchTree() : rootPtr(nullptr) {}
-
-template<class ItemType>
-BinarySearchTree<ItemType>::BinarySearchTree(const ItemType &rootItem) {
-    rootPtr = std::make_shared<BinaryNode<ItemType>>(rootItem);
+BinarySearchTree<ItemType>::BinarySearchTree() : rootPtr(nullptr) {
 }
 
 template<class ItemType>
-BinarySearchTree<ItemType>::BinarySearchTree(const BinarySearchTree<ItemType> &tree) {
-    // TODO Stub
-    rootPtr = nullptr;
-}
-
-template<class ItemType>
-BinarySearchTree<ItemType>::~BinarySearchTree() {
-    // TODO Stub
-}
-
-template<class ItemType>
-bool BinarySearchTree<ItemType>::add(const ItemType& newData)
-{
-    auto newNodePtr = std::make_shared<BinaryNode<ItemType>>(newData);
+bool BinarySearchTree<ItemType>::add(const ItemType &newEntry) {
+    BinaryNode<ItemType>* newNodePtr = new BinaryNode<ItemType>(newEntry);
     rootPtr = placeNode(rootPtr, newNodePtr);
     return true;
-} // end add
+}
 
 template<class ItemType>
-auto BinarySearchTree<ItemType>::placeNode(std::shared_ptr <BinaryNode<ItemType>> subTreePtr,
-                                           std::shared_ptr <BinaryNode<ItemType>> newNode) {
+BinaryNode<ItemType>* BinarySearchTree<ItemType>::placeNode(BinaryNode<ItemType> *subTreePtr,
+                                                            BinaryNode<ItemType> *newNode) {
+    BinaryNode<ItemType>* tempPtr;
+
     if (subTreePtr == nullptr) {
         return newNode;
-    } else if (subTreePtr->getItem() > newNode->getItem()) {
+    }  else if (subTreePtr->getItem() > newNode->getItem()) {
         tempPtr = placeNode(subTreePtr->getLeftChildPtr(), newNode);
         subTreePtr->setLeftChildPtr(tempPtr);
     } else {
         tempPtr = placeNode(subTreePtr->getRightChildPtr(), newNode);
         subTreePtr->setRightChildPtr(tempPtr);
     }
+
     return subTreePtr;
 }
 
 template<class ItemType>
-bool BinarySearchTree<ItemType>::removeValue(std::shared_ptr <BinaryNode<ItemType>> subTreePtr, const ItemType target,
-                                             bool &isSuccessful) {
+int BinarySearchTree<ItemType>::getHeight() const {
+    return getHeightFromNode(rootPtr);
+}
+
+template<class ItemType>
+int BinarySearchTree<ItemType>::getHeightFromNode(BinaryNode<ItemType> *subTreePtr) const {
     if (subTreePtr == nullptr) {
-        isSuccessful = false;
-    } else if (subTreePtr->getItem() == target) {
-        // Item is in the root of some subtree
-        subTreePtr = removeNode(subTreePtr); // Remove the item
-        isSuccessful = true;
-    } else if (subTreePtr->getItem() > target) {
-        // Search the left subtree
-        tempPtr = removeValue(subTreePtr->getLeftChildPtr(), target, isSuccessful);
-        subTreePtr->setLeftChildPtr(tempPtr);
+        // Tree is empty
+        return 0;
     } else {
-        // Search the right subtree
-        tempPtr = removeValue(subTreePtr->getRightChildPtr(), target, isSuccessful);
-        subTreePtr->setRightChildPtr(tempPtr);
-    }
-    return subTreePtr;
-}
-
-template<class ItemType>
-bool BinarySearchTree<ItemType>::removeLeftmostNode(std::shared_ptr <BinaryNode<ItemType>> subTreePtr,
-                                                    ItemType &inorderSuccessor) {
-    if (nodePtr->getLeftChildPtr() == nullptr) {
-        // This is the node you want; it has no left child, but it might have a right subtree
-        inorderSuccessor = nodePtr->getItem();
-        return removeNode(nodePtr);
-    } else {
-        tempPtr = removeLeftmostNode(nodePtr->getLeftChildPtr(), inorderSuccessor);
-        nodePtr->setLeftChildPtr(tempPtr);
-        return nodePtr;
+        int leftHeight = getHeightFromNode(subTreePtr->getLeftChildPtr());
+        int rightHeight = getHeightFromNode(subTreePtr->getRightChildPtr());
+        return std::max(leftHeight, rightHeight) + 1;
     }
 }
 
 template<class ItemType>
-bool BinarySearchTree<ItemType>::remove(const ItemType &target) {
-    isSuccessful = false;
-    rootPtr = removeValue(rootPtr, target, isSuccessful);
-    return isSuccessful;
+void BinarySearchTree<ItemType>::preorderTraverse() const {
+    std::cout << "PREORDER: ";
+    preorderTraverseFromNode(rootPtr);
+    std::cout << std::endl;
 }
 
 template<class ItemType>
-bool BinarySearchTree<ItemType>::findNode(std::shared_ptr <BinaryNode<ItemType>> treePtr,
-                                          const ItemType &target) const {
+void BinarySearchTree<ItemType>::inorderTraverse() const {
+    std::cout << "INORDER: ";
+    inorderTraverseFromNode(rootPtr);
+    std::cout << std::endl;
+}
+
+template<class ItemType>
+void BinarySearchTree<ItemType>::postorderTraverse() const {
+    std::cout << "POSTORDER: ";
+    postorderTraverseFromNode(rootPtr);
+    std::cout << std::endl;
+}
+
+template<class ItemType>
+void BinarySearchTree<ItemType>::preorderTraverseFromNode(BinaryNode<ItemType> *subTreePtr) const {
     if (subTreePtr == nullptr) {
-        return nullptr; // Not found
-    } else if (subTreePtr->getItem() == target) {
-        return subTreePtr; // Found
-    } else if (subTreePtr->getItem() > target) {
-        // Search left subtree
-        return findNode(subTreePtr->getLeftChildPtr(), target);
-    } else {
-        // Search right subtree
-        return findNode(subTreePtr->getRightChildPtr(), target);
+        return;
     }
+
+    std::cout << subTreePtr->getItem() << " ";
+    preorderTraverseFromNode(subTreePtr->getLeftChildPtr());
+    preorderTraverseFromNode(subTreePtr->getRightChildPtr());
+}
+
+template<class ItemType>
+void BinarySearchTree<ItemType>::inorderTraverseFromNode(BinaryNode<ItemType> *subTreePtr) const {
+    if (subTreePtr == nullptr) {
+        return;
+    }
+
+    inorderTraverseFromNode(subTreePtr->getLeftChildPtr());
+    std::cout << subTreePtr->getItem() << " ";
+    inorderTraverseFromNode(subTreePtr->getRightChildPtr());
+}
+
+template<class ItemType>
+void BinarySearchTree<ItemType>::postorderTraverseFromNode(BinaryNode<ItemType> *subTreePtr) const {
+    if (subTreePtr == nullptr) {
+        return;
+    }
+
+    postorderTraverseFromNode(subTreePtr->getLeftChildPtr());
+    postorderTraverseFromNode(subTreePtr->getRightChildPtr());
+    std::cout << subTreePtr->getItem() << " ";
 }
 
 #endif

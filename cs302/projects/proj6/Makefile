@@ -1,7 +1,7 @@
 TARGET = proj6
 LIBS = -lm #Math Library, just a placeholder
-HEADERS = BinaryNode.h BinaryNodeTree.h BinarySearchTree.h BinaryTreeInterface.h NotFoundException.h PrecondViolatedExcept.h
-SRCS = proj6.cpp NotFoundException.cpp PrecondViolatedExcept.cpp
+HEADERS = BinarySearchTree.h BinaryNode.h
+SRCS = proj6.cpp
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
 CXX = g++
 CXX_FLAGS = -Wall -std=c++14
