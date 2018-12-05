@@ -5,6 +5,7 @@
 #ifndef SCHOOL_BAGINTERFACE_H
 #define SCHOOL_BAGINTERFACE_H
 
+
 template<class ItemType>
 class BagInterface
 {

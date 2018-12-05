@@ -1,3 +1,0 @@
-Queue.o: Queue.h
-QueueArray.o: QueueArray.h Queue.h
-config.o: config.h
