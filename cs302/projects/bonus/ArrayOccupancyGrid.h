@@ -3,9 +3,14 @@
 
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 #include "OccupancyGridInterface.h"
 #include "OccupancyGridCell.h"
+
+void getXYStep(const float m) {
+
+}
 
 class ArrayOccupancyGrid : public OccupancyGridInterface {
 private:
@@ -42,6 +47,10 @@ public:
             }
             outfile << std::endl;
         }
+    }
+
+    void raytrace(const int x, const int y, const int degrees) {
+        float m = std::tan(degrees);
     }
 
     // TODO: Clean up on destroy
