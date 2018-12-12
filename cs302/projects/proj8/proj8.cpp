@@ -17,7 +17,7 @@ int main() {
     std::cout << node.getColor() << std::endl;
 
 //    srand(time(NULL));
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 2; i++) {
         llrbt.add(randIntBetween(MIN_VAL, MAX_VAL));
         llrbt.preorderTraverse();
     }

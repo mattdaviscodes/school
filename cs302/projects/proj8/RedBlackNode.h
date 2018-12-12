@@ -30,6 +30,7 @@ public:
 
     Color getColor() const;
     void setColor(const Color newColor);
+    void flipColor();
 }; // end RedBlackNode
 
 template<class ItemType>
@@ -81,4 +82,15 @@ template<class ItemType>
 void RedBlackNode<ItemType>::setColor(const Color newColor) {
     color = newColor;
 }
+
+template<class ItemType>
+void RedBlackNode<ItemType>::flipColor() {
+    if (color == RED) {
+        color = BLACK;
+        return;
+    }
+
+    color = RED;
+}
+
 #endif

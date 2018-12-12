@@ -29,6 +29,10 @@ protected:
     void leftRotate(RedBlackNode<ItemType> *node);
     void rightRotate(RedBlackNode<ItemType> *node);
 
+    bool isRed(RedBlackNode<ItemType> *node) const;
+
+    void flipColors(RedBlackNode<ItemType> *node);
+
     int getHeightFromNode(RedBlackNode<ItemType> *subTreePtr) const;
 
     void preorderTraverseFromNode(RedBlackNode<ItemType> *subTreePtr) const;
@@ -117,6 +121,17 @@ void LeftLeaningRedBlackTree<ItemType>::insertFixup(RedBlackNode<ItemType> *node
                 parent->setColor(BLACK);
                 uncle->setColor(BLACK);
                 curr = grandparent;
+
+                // Does this make it left leaning?
+                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
+                    leftRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
+                    rightRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
+                    flipColors(curr);
+                }
             } else {
                 if (curr == parent->getRightChildPtr()) {
                     leftRotate(parent);
@@ -129,6 +144,17 @@ void LeftLeaningRedBlackTree<ItemType>::insertFixup(RedBlackNode<ItemType> *node
                 parent->setColor(grandparent->getColor());
                 grandparent->setColor(tmpColor);
                 curr = parent;
+
+                // Does this make it left leaning?
+                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
+                    leftRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
+                    rightRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
+                    flipColors(curr);
+                }
             }
         } else {
             uncle = grandparent->getLeftChildPtr();
@@ -138,6 +164,17 @@ void LeftLeaningRedBlackTree<ItemType>::insertFixup(RedBlackNode<ItemType> *node
                 parent->setColor(BLACK);
                 uncle->setColor(BLACK);
                 curr = grandparent;
+
+                // Does this make it left leaning?
+                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
+                    leftRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
+                    rightRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
+                    flipColors(curr);
+                }
             } else {
                 if (curr == parent->getLeftChildPtr()) {
                     rightRotate(parent);
@@ -150,11 +187,38 @@ void LeftLeaningRedBlackTree<ItemType>::insertFixup(RedBlackNode<ItemType> *node
                 parent->setColor(grandparent->getColor());
                 grandparent->setColor(tmpColor);
                 curr = parent;
+
+                // Does this make it left leaning?
+                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
+                    leftRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
+                    rightRotate(curr);
+                }
+                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
+                    flipColors(curr);
+                }
             }
         }
     }
 
     rootPtr->setColor(BLACK);
+}
+
+template<class ItemType>
+bool LeftLeaningRedBlackTree<ItemType>::isRed(RedBlackNode<ItemType> *node) const {
+    if (node != nullptr) {
+        return node->getColor() == RED;
+    }
+
+    return false;   // null pointers are BLACK
+}
+
+template<class ItemType>
+void LeftLeaningRedBlackTree<ItemType>::flipColors(RedBlackNode<ItemType> *node) {
+    node->flipColor();
+    node->getLeftChildPtr()->flipColor();
+    node->getRightChildPtr()->flipColor();
 }
 
 template<class ItemType>

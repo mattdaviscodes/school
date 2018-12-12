@@ -1,0 +1,3 @@
+LeftLeaningRedBlackTree.o: LeftLeaningRedBlackTree.h RedBlackNode.h
+BinaryNode.o: BinaryNode.h
+RedBlackNode.o: RedBlackNode.h
