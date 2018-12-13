@@ -1,6 +1,6 @@
 TARGET = proj8
 LIBS = -lm #Math Library, just a placeholder
-HEADERS = LeftLeaningRedBlackTree.h BinaryNode.h RedBlackNode.h
+HEADERS = LeftLeaningRedBlackTree.h RedBlackNode.h
 SRCS = proj8.cpp
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
 CXX = g++

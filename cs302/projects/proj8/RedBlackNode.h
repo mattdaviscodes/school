@@ -17,6 +17,7 @@ public:
     RedBlackNode(const ItemType &anItem);
 
     ItemType getItem() const;
+    void setItem(const ItemType &anItem);
 
     RedBlackNode<ItemType> *getLeftChildPtr() const;
     RedBlackNode<ItemType> *getRightChildPtr() const;
@@ -41,6 +42,11 @@ RedBlackNode<ItemType>::RedBlackNode(const ItemType &anItem) : item(anItem), lef
 template<class ItemType>
 ItemType RedBlackNode<ItemType>::getItem() const {
     return item;
+}
+
+template<class ItemType>
+void RedBlackNode<ItemType>::setItem(const ItemType &anItem) {
+    item = anItem;
 }
 
 template<class ItemType>

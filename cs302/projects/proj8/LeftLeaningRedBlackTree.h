@@ -9,6 +9,9 @@
 
 std::string enumToString(const Color color);
 
+template<class ItemType>
+void debugNode(const RedBlackNode<ItemType> *node);
+
 
 template<class ItemType>
 class LeftLeaningRedBlackTree
@@ -25,9 +28,18 @@ protected:
     // search tree.
     RedBlackNode<ItemType> *placeNode(RedBlackNode<ItemType> *subTreePtr, RedBlackNode<ItemType> *newNode);
 
-    void insertFixup(RedBlackNode<ItemType> *node);
-    void leftRotate(RedBlackNode<ItemType> *node);
-    void rightRotate(RedBlackNode<ItemType> *node);
+    RedBlackNode<ItemType> *insertRec(RedBlackNode<ItemType> *subtree, RedBlackNode<ItemType> *node);
+    RedBlackNode<ItemType> *deleteRec(RedBlackNode<ItemType> *subtree, const ItemType& entry);
+    RedBlackNode<ItemType>* leftRotate(RedBlackNode<ItemType> *node);
+    RedBlackNode<ItemType>* rightRotate(RedBlackNode<ItemType> *node);
+
+    RedBlackNode<ItemType>* findMin(RedBlackNode<ItemType>* node);
+    RedBlackNode<ItemType>* deleteMin(RedBlackNode<ItemType>* node);
+
+    RedBlackNode<ItemType>* moveRedLeft(RedBlackNode<ItemType>* node);
+    RedBlackNode<ItemType>* moveRedRight(RedBlackNode<ItemType>* node);
+
+    RedBlackNode<ItemType>* fixUp(RedBlackNode<ItemType>* node);
 
     bool isRed(RedBlackNode<ItemType> *node) const;
 
@@ -50,7 +62,8 @@ public:
     //------------------------------------------------------------
     int getHeight() const;
 
-    RedBlackNode<ItemType> *add(const ItemType& newEntry);
+    bool add(const ItemType& newEntry);
+    void remove(const ItemType& entry);
 
     //------------------------------------------------------------
     // Public Traversals Section.
@@ -64,145 +77,151 @@ template<class ItemType>
 LeftLeaningRedBlackTree<ItemType>::LeftLeaningRedBlackTree() : rootPtr(nullptr) {
 }
 
-/**
- * @return The parent of the node created (nullptr if root)
- */
 template<class ItemType>
-RedBlackNode<ItemType> * LeftLeaningRedBlackTree<ItemType>::add(const ItemType &newEntry) {
+bool LeftLeaningRedBlackTree<ItemType>::add(const ItemType &newEntry) {
     RedBlackNode<ItemType> *newNodePtr = new RedBlackNode<ItemType>(newEntry);
-    RedBlackNode<ItemType> *curr = rootPtr;
-    RedBlackNode<ItemType> *prev = nullptr; // Always points to parent of current node
-
-    // Go down tree until a leaf is reached, at which point prev is the parent of node to be inserted
-    while (curr != nullptr) {
-        prev = curr;
-        if (newNodePtr->getItem() > curr->getItem()) {
-            curr = curr->getRightChildPtr();
-        } else {
-            curr = curr->getLeftChildPtr();
-        }
-    }
-
-    newNodePtr->setParentPtr(prev);
-
-    if (prev == nullptr) {
-        // Tree was empty, set new node to be root
-        rootPtr = newNodePtr;
-        rootPtr->setColor(BLACK);
-    } else if (newNodePtr->getItem() > prev->getItem()) {
-        prev->setRightChildPtr(newNodePtr);
-    } else {
-        prev->setLeftChildPtr(newNodePtr);
-    }
-
-    // Fix any inconsistencies that could have been introduced by adding thew new red node
-    insertFixup(newNodePtr);
-
-    return prev;
+    rootPtr = insertRec(rootPtr, newNodePtr);
+    rootPtr->setColor(BLACK);
+    return true;
 }
 
 template<class ItemType>
-void LeftLeaningRedBlackTree<ItemType>::insertFixup(RedBlackNode<ItemType> *node) {
-    RedBlackNode<ItemType> *curr = node;
-    RedBlackNode<ItemType> *parent = nullptr;
-    RedBlackNode<ItemType> *grandparent = nullptr;
-    RedBlackNode<ItemType> *uncle = nullptr;
-    Color tmpColor;
+void LeftLeaningRedBlackTree<ItemType>::remove(const ItemType &entry) {
+    rootPtr = deleteRec(rootPtr, entry);
+}
 
-    while ((curr != rootPtr) && (curr->getColor() != BLACK) && curr->getParentPtr()->getColor() == RED) {
-        parent = curr->getParentPtr();
-        grandparent = parent->getParentPtr();
-
-        if (parent == grandparent->getLeftChildPtr()) {
-            uncle = grandparent->getRightChildPtr();
-
-            if (uncle != nullptr && uncle->getColor() == RED) {
-                grandparent->setColor(RED);
-                parent->setColor(BLACK);
-                uncle->setColor(BLACK);
-                curr = grandparent;
-
-                // Does this make it left leaning?
-                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
-                    leftRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
-                    rightRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
-                    flipColors(curr);
-                }
-            } else {
-                if (curr == parent->getRightChildPtr()) {
-                    leftRotate(parent);
-                    curr = parent;
-                    parent = curr->getParentPtr();
-                }
-
-                rightRotate(grandparent);
-                tmpColor = parent->getColor();
-                parent->setColor(grandparent->getColor());
-                grandparent->setColor(tmpColor);
-                curr = parent;
-
-                // Does this make it left leaning?
-                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
-                    leftRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
-                    rightRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
-                    flipColors(curr);
-                }
+template<class ItemType>
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::deleteRec(RedBlackNode<ItemType> *subtree,
+                                                                     const ItemType &entry) {
+    if (entry < subtree->getItem()) {
+        if (subtree->getLeftChildPtr() != nullptr) {
+            if (!isRed(subtree->getLeftChildPtr()) && !isRed(subtree->getLeftChildPtr()->getLeftChildPtr())) {
+                subtree = moveRedLeft(subtree);
             }
-        } else {
-            uncle = grandparent->getLeftChildPtr();
+            subtree->setLeftChildPtr(deleteRec(subtree->getLeftChildPtr(), entry));
+        }
+    } else {
+        if (isRed(subtree->getLeftChildPtr())) {
+            subtree = rightRotate(subtree);
+        }
 
-            if (uncle != nullptr && uncle->getColor() == RED) {
-                grandparent->setColor(RED);
-                parent->setColor(BLACK);
-                uncle->setColor(BLACK);
-                curr = grandparent;
+        if (entry == subtree->getItem() && subtree->getRightChildPtr() == nullptr) {
+            delete subtree;
+            return nullptr;
+        }
 
-                // Does this make it left leaning?
-                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
-                    leftRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
-                    rightRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
-                    flipColors(curr);
-                }
+        if (subtree->getRightChildPtr() != nullptr) {
+            if (!isRed(subtree->getRightChildPtr()) && !isRed(subtree->getRightChildPtr()->getLeftChildPtr())) {
+                subtree = moveRedRight(subtree);
+            }
+
+            if (entry == subtree->getItem()) {
+                subtree->setItem(findMin(subtree->getRightChildPtr())->getItem());
+                subtree->setRightChildPtr(deleteMin(subtree->getRightChildPtr()));
             } else {
-                if (curr == parent->getLeftChildPtr()) {
-                    rightRotate(parent);
-                    curr = parent;
-                    parent = curr->getParentPtr();
-                }
-
-                leftRotate(grandparent);
-                tmpColor = parent->getColor();
-                parent->setColor(grandparent->getColor());
-                grandparent->setColor(tmpColor);
-                curr = parent;
-
-                // Does this make it left leaning?
-                if (isRed(curr->getRightChildPtr()) && !isRed(curr->getLeftChildPtr())) {
-                    leftRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getLeftChildPtr()->getLeftChildPtr())) {
-                    rightRotate(curr);
-                }
-                if (isRed(curr->getLeftChildPtr()) && isRed(curr->getRightChildPtr())) {
-                    flipColors(curr);
-                }
+                subtree->setRightChildPtr(deleteRec(subtree->getRightChildPtr(), entry));
             }
         }
     }
 
-    rootPtr->setColor(BLACK);
+    return fixUp(subtree);
+}
+
+template<class ItemType>
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::findMin(RedBlackNode<ItemType>* node) {
+    while (node->getLeftChildPtr() != nullptr) {
+        node = node->getLeftChildPtr();
+    }
+
+    return node;
+}
+
+template<class ItemType>
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::deleteMin(RedBlackNode<ItemType>* node) {
+    if (node->getLeftChildPtr() == nullptr) {
+        delete node;
+        return nullptr;
+    }
+
+    if (!isRed(node->getLeftChildPtr()) && !isRed(node->getLeftChildPtr()->getLeftChildPtr())) {
+        node = moveRedLeft(node);
+    }
+
+    node->setLeftChildPtr(deleteMin(node->getLeftChildPtr()));
+
+    return fixUp(node);
+}
+
+template<class ItemType>
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::moveRedLeft(RedBlackNode<ItemType>* node) {
+    flipColors(node);
+
+    if (node->getRightChildPtr() != nullptr && isRed(node->getRightChildPtr()->getLeftChildPtr())) {
+        node->setRightChildPtr(rightRotate(node->getRightChildPtr()));
+        node = leftRotate(node);
+
+        flipColors(node);
+    }
+
+    return node;
+}
+
+template<class ItemType>
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::moveRedRight(RedBlackNode<ItemType>* node) {
+    flipColors(node);
+
+    if (node->getLeftChildPtr() != nullptr && isRed(node->getLeftChildPtr()->getLeftChildPtr())) {
+        node = rightRotate(node);
+        flipColors(node);
+    }
+
+    return node;
+}
+
+template<class ItemType>
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::fixUp(RedBlackNode<ItemType>* node) {
+    if (isRed(node->getRightChildPtr())) {
+        node = leftRotate(node);
+    }
+
+    if (isRed(node->getLeftChildPtr()) && isRed(node->getLeftChildPtr()->getLeftChildPtr())) {
+        node = rightRotate(node);
+    }
+
+    if (isRed(node->getLeftChildPtr()) && isRed(node->getRightChildPtr())) {
+        flipColors(node);
+    }
+
+    return node;
+}
+
+template<class ItemType>
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::insertRec(RedBlackNode<ItemType> *subtree, RedBlackNode<ItemType> *node) {
+    // Special case for inserting a leaf.  Just return the pointer;
+    // the caller will insert the new node into the parent node.
+    if (subtree == nullptr) {
+        return node;
+    }
+
+    if (node->getItem() < subtree->getItem()) {
+        subtree->setLeftChildPtr(insertRec(subtree->getLeftChildPtr(), node));
+    } else {
+        subtree->setRightChildPtr(insertRec(subtree->getRightChildPtr(), node));
+    }
+
+    if (isRed(subtree->getRightChildPtr()) && !isRed(subtree->getLeftChildPtr())) {
+        subtree = leftRotate(subtree);
+    }
+
+    if (isRed(subtree->getLeftChildPtr()) && isRed(subtree->getLeftChildPtr()->getLeftChildPtr())) {
+        subtree = rightRotate(subtree);
+    }
+
+    if (isRed(subtree->getLeftChildPtr()) && isRed(subtree->getRightChildPtr())) {
+        flipColors(subtree);
+    }
+
+    return subtree;
 }
 
 template<class ItemType>
@@ -222,49 +241,23 @@ void LeftLeaningRedBlackTree<ItemType>::flipColors(RedBlackNode<ItemType> *node)
 }
 
 template<class ItemType>
-void LeftLeaningRedBlackTree<ItemType>::leftRotate(RedBlackNode<ItemType> *node) {
-    RedBlackNode<ItemType> *right = node->getRightChildPtr();
-    node->setRightChildPtr(right->getLeftChildPtr());
-
-    if (node->getRightChildPtr() != nullptr) {
-        node->getRightChildPtr()->setParentPtr(node);
-    }
-
-    right->setParentPtr(node->getParentPtr());
-
-    if (node->getParentPtr() == nullptr) {
-        rootPtr = right;
-    } else if (node == node->getParentPtr()->getLeftChildPtr()) {
-        node->getParentPtr()->setLeftChildPtr(right);
-    } else {
-        node->getParentPtr()->setRightChildPtr(right);
-    }
-
-    right->setLeftChildPtr(node);
-    node->setParentPtr(right);
+RedBlackNode<ItemType>* LeftLeaningRedBlackTree<ItemType>::leftRotate(RedBlackNode<ItemType> *node) {
+    RedBlackNode<ItemType>* temp = node->getRightChildPtr();
+    node->setRightChildPtr(temp->getLeftChildPtr());
+    temp->setLeftChildPtr(node);
+    temp->setColor(node->getColor());
+    node->setColor(RED);
+    return temp;
 }
 
 template<class ItemType>
-void LeftLeaningRedBlackTree<ItemType>::rightRotate(RedBlackNode<ItemType> *node) {
-    RedBlackNode<ItemType> *left = node->getLeftChildPtr();
-    node->setLeftChildPtr(left->getRightChildPtr());
-
-    if (node->getLeftChildPtr() != nullptr) {
-        node->getLeftChildPtr()->setParentPtr(node);
-    }
-
-    left->setParentPtr(node->getParentPtr());
-
-    if (node->getParentPtr() == nullptr) {
-        rootPtr = left;
-    } else if (node == node->getParentPtr()->getLeftChildPtr()) {
-        node->getParentPtr()->setLeftChildPtr(left);
-    } else {
-        node->getParentPtr()->setRightChildPtr(left);
-    }
-
-    left->setRightChildPtr(node);
-    node->setParentPtr(left);
+RedBlackNode<ItemType>*  LeftLeaningRedBlackTree<ItemType>::rightRotate(RedBlackNode<ItemType> *node) {
+    RedBlackNode<ItemType>* temp = node->getLeftChildPtr();
+    node->setLeftChildPtr(temp->getRightChildPtr());
+    temp->setRightChildPtr(node);
+    temp->setColor(node->getColor());
+    node->setColor(RED);
+    return temp;
 }
 
 template<class ItemType>
@@ -361,6 +354,16 @@ std::string enumToString(const Color color) {
         return "B";
     }
     return "R";
+}
+
+template<class ItemType>
+void debugNode(const RedBlackNode<ItemType> *node) {
+    if (node != nullptr) {
+        std::cout << "Number: " << node->getItem() << std::endl
+                  << "Color: " << enumToString(node->getColor()) << std::endl
+                  << std::endl;
+
+    }
 }
 
 #endif

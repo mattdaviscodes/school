@@ -10,17 +10,24 @@ int randIntBetween(const int min, const int max);
 
 int main() {
     LeftLeaningRedBlackTree<int> llrbt;
+    int toInsert, toDelete;
 
-    RedBlackNode<int> node(5);
-
-    node.setColor(BLACK);
-    std::cout << node.getColor() << std::endl;
-
-//    srand(time(NULL));
-    for (int i = 0; i < 2; i++) {
-        llrbt.add(randIntBetween(MIN_VAL, MAX_VAL));
+    srand(time(NULL));
+    for (int i = 0; i < NUM_VALS; i++) {
+        toInsert = randIntBetween(MIN_VAL, MAX_VAL);
+        if (i == 4) {
+            toDelete = toInsert;
+        }
+        std::cout << "INSERTING " << toInsert << std::endl;
+        llrbt.add(toInsert);
         llrbt.preorderTraverse();
+        std::cout << std::endl;
     }
+
+    std::cout << "DELETING " << toDelete << std::endl;
+    llrbt.remove(toDelete);
+    llrbt.preorderTraverse();
+
     return 0;
 }
 
