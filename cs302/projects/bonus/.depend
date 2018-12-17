@@ -1,4 +1,0 @@
-ArrayOccupancyGrid.o: ArrayOccupancyGrid.h OccupancyGridInterface.h \
- OccupancyGridCell.h
-OccupancyGridInterface.o: OccupancyGridInterface.h
-OccupancyGridCell.o: OccupancyGridCell.h

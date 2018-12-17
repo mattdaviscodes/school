@@ -1,6 +1,6 @@
 TARGET = test
 LIBS = -lm #Math Library, just a placeholder
-HEADERS = ArrayOccupancyGrid.h OccupancyGridInterface.h OccupancyGridCell.h
+HEADERS = ArrayOccupancyGrid.h OccupancyGridInterface.h OccupancyGridCell.h Raytracer.h
 SRCS = test.cpp
 OBJECTS := $(patsubst %.cpp,%.o,$(SRCS))
 CXX = g++
