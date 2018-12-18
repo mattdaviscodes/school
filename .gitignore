@@ -1,8 +1,10 @@
 .vagrant/
 
+*.0
+.depend
+
 cs135/readings/executables/
 *.out
-*.o
 .idea
 cmake-build-debug/
 CMakeLists.txt
@@ -10,3 +12,4 @@ CMakeLists.txt
 # CS 202
 cs202/projects/submissions/
 cs202/scratch/
+
