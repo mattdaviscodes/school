@@ -1,3 +1,5 @@
+#include <cstdlib>  // atoi()
+
 #include "ArrayOccupancyGrid.h"
 #include "OccupancyGridCell.h"
 #include "Raytracer.h"
@@ -16,7 +18,7 @@ const int GRID_WIDTH = 1000;
  * This link seems to describe how to solve the parametric equation for lines.
  */
 
-int main() {
+int main(int argc, char** argv) {
 //    ArrayOccupancyGrid grid(GRID_HEIGHT, GRID_WIDTH);
 //    grid.toPBM();
 
@@ -24,7 +26,7 @@ int main() {
 //    std::cout << m * 100<< std::endl;
 
     Raytracer rt;
-    std::vector<std::pair<int, int>> vec = rt.trace(240, 500, 500);
+    std::vector<std::pair<int, int>> vec = rt.trace(std::atoi(argv[1]), 0, 0);
 
 
 //    int i = 0;
@@ -34,7 +36,10 @@ int main() {
     int counter = 1;
     for (auto i = vec.begin(); i != vec.end(); i++) {
         std::cout << counter++ << "\t" << i->first << "\t" << i->second << std::endl;
+//        std::cout << "(" << i->first << ", " << i->second << ")\t";
     }
+
+//    rt.testing();
 
 //    std::vector<std::pair<int, int>> test;
 //    test.push_back(std::make_pair(0, 1));

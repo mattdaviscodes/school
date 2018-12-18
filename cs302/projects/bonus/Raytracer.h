@@ -36,35 +36,70 @@ public:
         return coordPairs;
     }
 
+    void testing() {
+        double rise, run;
+        for (int theta = 0; theta < 360; theta += 15) {
+            if (theta == 90) {
+                rise = 1;
+                run = 0;
+            } else if (theta == 180) {
+                rise = 0;
+                run = -1;
+            } else if (theta == 270) {
+                rise = -1;
+                run = 0;
+            } else {
+                rise = std::tan(degreesToRadians(theta));
+                run = 1;
+
+                // If theta is in quadrant 2 or 3, we flip the signs of rise and run so ray oriented correctly
+                if (theta > 90 && theta < 270) {
+                    rise = -rise;
+                    run = -run;
+                }
+            }
+
+            std::cout << theta << "\t" << run << "\t" << rise<< std::endl;
+        }
+    }
+
 
     void getRiseRun (int theta, double &rise, double &run) {
-        if (theta == 90) {
-            rise = 1;
-            run = 0;
-            return;
-        } else if (theta == 270) {
-            rise = -1;
-            run = 0;
-            return;
+        // This is such a hack. Hard coding specific angles that were giving me trouble.
+        switch (theta) {
+            case 0  : rise = 0; run = 1; return;
+            case 45 : rise = 1; run = 1; return;
+            case 90 : rise = 1; run = 0; return;
+            case 135: rise = 1; run = -1; return;
+            case 180: rise = 0; run = -1; return;
+            case 225: rise = -1; run = -1; return;
+            case 270: rise = -1; run = 0; return;
+            case 315: rise = -1; run = 1; return;
         }
 
         rise = std::tan(degreesToRadians(theta));
         run = 1;
 
-        std::cout << "RISE: " << rise << " RUN: " << run << std::endl;
+        // If theta is in quadrant 2 or 3, we flip the signs of rise and run so ray oriented correctly
+        if (theta > 90 && theta < 270) {
+            rise = -rise;
+            run = -run;
+        }
 
         // If abs(rise) is greater than run, scale rise to 1 and run proportionately
         // The two specific theta checks protect against floating point precision errors
         // which cause the rise > run comparison to succeed incorrectly -- they should be equal
-        if ((std::abs(rise) > run) && theta != 315 && theta != 135) {
-            run = 1 / rise;
-            rise = 1;
-        } else if (theta > 90 && theta < 270) {
-            rise *= -1;
-            run *= -1;
+        if ((std::abs(rise) > std::abs(run))) {
+            double oldRise = rise;
+            if (rise >= 0) {
+                rise = 1;
+                run = (run * rise) / oldRise;
+            } else {
+                std::cout << run << std::endl;
+                rise = -1;
+                run = (run * rise) / oldRise;
+            }
         }
-
-        std::cout << "RISE: " << rise << " RUN: " << run << std::endl;
     }
 };
 
