@@ -20,7 +20,7 @@ public:
         std::vector<std::pair<int, int>> coordPairs;
         int step = 1;
         int x, y;
-        double rise, run, totalX, totalY;
+        double rise, run;
 
         getRiseRun(theta, rise, run);
 
@@ -35,34 +35,6 @@ public:
 
         return coordPairs;
     }
-
-    void testing() {
-        double rise, run;
-        for (int theta = 0; theta < 360; theta += 15) {
-            if (theta == 90) {
-                rise = 1;
-                run = 0;
-            } else if (theta == 180) {
-                rise = 0;
-                run = -1;
-            } else if (theta == 270) {
-                rise = -1;
-                run = 0;
-            } else {
-                rise = std::tan(degreesToRadians(theta));
-                run = 1;
-
-                // If theta is in quadrant 2 or 3, we flip the signs of rise and run so ray oriented correctly
-                if (theta > 90 && theta < 270) {
-                    rise = -rise;
-                    run = -run;
-                }
-            }
-
-            std::cout << theta << "\t" << run << "\t" << rise<< std::endl;
-        }
-    }
-
 
     void getRiseRun (int theta, double &rise, double &run) {
         // This is such a hack. Hard coding specific angles that were giving me trouble.
@@ -95,7 +67,6 @@ public:
                 rise = 1;
                 run = (run * rise) / oldRise;
             } else {
-                std::cout << run << std::endl;
                 rise = -1;
                 run = (run * rise) / oldRise;
             }

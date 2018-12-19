@@ -4,31 +4,35 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <vector>
 
 #include "OccupancyGridInterface.h"
 #include "OccupancyGridCell.h"
 
-void getXYStep(const float m) {
-}
+const int DEFAULT_GRID_WIDTH = 1000;
+const int DEFAULT_GRID_HEIGHT = 1000;
 
 class ArrayOccupancyGrid : public OccupancyGridInterface {
 private:
     int height;
     int width;
 
-    OccupancyGridCell*** grid;
+    std::vector<std::vector<OccupancyGridCell>> grid;
 
 public:
+    // Just forwards on to param ctor with defaults
+    ArrayOccupancyGrid() : ArrayOccupancyGrid(DEFAULT_GRID_HEIGHT, DEFAULT_GRID_WIDTH) {}
+
     ArrayOccupancyGrid(const int height, const int width) : height(height), width(width) {
-        grid = new OccupancyGridCell**[height];
         for (int i = 0; i < height; i++) {
-            grid[i] = new OccupancyGridCell*[width];
+            grid.push_back(std::vector<OccupancyGridCell>());
             for (int j = 0; j < width; j++) {
+                // TODO - These probably shouldn't be hardcoded. Maybe add a function called addKnownObstacle?
+                OccupancyGridCell newCell(i, j);
                 if (i >= 250 && i <= 500 && j >= 250 && j <= 500) {
-                    grid[i][j] = new OccupancyGridCell(i, j, true);
-                } else {
-                    grid[i][j] = new OccupancyGridCell(i, j);
+                    newCell.setOccupied(true);
                 }
+                grid[i].push_back(newCell);
             }
         }
     }
@@ -42,20 +46,14 @@ public:
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                outfile << !grid[i][j]->isOccupied() << " ";
+                outfile << !grid[i][j].isOccupied() << " ";
             }
             outfile << std::endl;
         }
     }
 
-    void raytrace(const int x, const int y, const int degrees) {
-        float m = std::tan(degrees);
-
-//        std:cout << "Step\tX\tY" << std::endl;
-
-        for (int i = 0; i < 50; i++) {
-//            std:cout << i << "\t" << i << "\t" << std::endl;
-        }
+    std::vector<OccupancyGridCell> operator[](int i) {
+        return grid[i];
     }
 
     // TODO: Clean up on destroy
