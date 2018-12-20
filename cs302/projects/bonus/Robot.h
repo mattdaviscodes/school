@@ -14,7 +14,6 @@ const int DEFAULT_X = 0;
 const int DEFAULT_Y = 0;
 const int DEFAULT_POSE = 0;
 
-const int RAY_DISTANCE = 50;
 const std::vector<int> RAY_ANGLES = {90, 75, 60, 45, 30, 15, 0, 345, 330, 315, 300, 285, 270};
 
 const double OCCUPIED_CONFIDENCE = 0.9;
@@ -36,8 +35,13 @@ private:
     int pose;
 
 protected:
-    void updateGridCell(const int x, const int y);
+    void updateGridCell(OccupancyGridCell &cell, const bool reading);
+    void updateGridCell(const int x, const int y, const bool reading);
+
+    bool getCellReading(const OccupancyGridCell &cell);
     bool getCellReading(const int x, const int y);
+
+    void updateCellsInRay(const std::vector<std::pair<int, int>> ray);
 
 public:
     Robot();
@@ -51,6 +55,8 @@ public:
     void setPose(const int currPose);
 
     void scan();
+
+    void outputGridState() const;
 };
 
 #endif

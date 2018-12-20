@@ -31,18 +31,38 @@ void Robot::setPose(const int currPose) {
 void Robot::scan() {
     for (auto angle : RAY_ANGLES) {
         int trueAngle = (angle + pose) % 360;
-        std::vector<std::pair<int, int>> ray = tracer.trace(trueAngle, location.first, location.second);
+        std::vector<std::pair<int, int>> ray = tracer.trace(trueAngle, location.second, location.first);
+        updateCellsInRay(ray);
     }
 }
 
 bool Robot::getCellReading(const int x, const int y) {
-    const OccupancyGridCell cell = grid[x][y];
+    const OccupancyGridCell &cell = grid.getCell(x, y);
+    return getCellReading(cell);
+}
+
+bool Robot::getCellReading(const OccupancyGridCell& cell) {
     const double randNum = doubleRand();
 
     if (cell.isOccupied()) {
         return randNum <= OCCUPIED_CONFIDENCE;
     } else {
-        return randNum <= FREE_CONFIDENCE;
+        return randNum > FREE_CONFIDENCE;
+    }
+}
+
+void Robot::updateCellsInRay(const std::vector<std::pair<int, int>> ray) {
+    for (auto pair : ray) {
+        // Stop when we hit the grid bounds
+        if (pair.first < 0 || pair.first > grid.getHeight() || pair.second < 0 || pair.second > grid.getWidth())
+            return;
+
+        bool reading = getCellReading(pair.first, pair.second);
+        updateGridCell(pair.first, pair.second, reading);
+
+        // Need to stop traversing ray after first obstacle hit
+        if (reading)
+            return;
     }
 }
 
@@ -51,4 +71,21 @@ double doubleRand() {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0.0, 1.0);
     return dis(gen);
+}
+
+void Robot::updateGridCell(const int x, const int y, const bool reading) {
+    OccupancyGridCell &cell = grid.getCell(x, y);
+    updateGridCell(cell, reading);
+}
+
+void Robot::updateGridCell(OccupancyGridCell &cell, const bool reading) {
+    if (reading) {
+        cell.updateProbability(OCCUPIED_CONFIDENCE);
+    } else {
+        cell.updateProbability(-FREE_CONFIDENCE);
+    }
+}
+
+void Robot::outputGridState() const {
+    grid.toPBM();
 }

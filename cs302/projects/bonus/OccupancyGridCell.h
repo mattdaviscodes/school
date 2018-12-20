@@ -1,7 +1,7 @@
 #ifndef SCHOOL_OCCUPANCY_GRID_CELL_H
 #define SCHOOL_OCCUPANCY_GRID_CELL_H
 
-const double DEFAULT_PROB = 0.5;
+const double DEFAULT_PROB = 0;
 const bool DEFAULT_OCC = false;
 
 class OccupancyGridCell {
@@ -10,7 +10,7 @@ private:
     int x;
     int y;
 
-    // 0 to 1 representing confidence in occupancy or vacancy
+    // Logodd of combined measurements representing confidence in occupancy or vacancy
     double probability;
 
     // True occupancy state of cell
@@ -29,6 +29,8 @@ public:
 
     void setProbability(const double newProb) { probability = newProb; }
     void setOccupied(const bool occ) { occupied = occ; }
+
+    void updateProbability(double probIncrement) { probability += probIncrement; }
 };
 
 #endif

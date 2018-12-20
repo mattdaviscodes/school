@@ -6,7 +6,7 @@
 #include <cmath>    // tan
 #include <math.h> // PI
 
-const int MAX_STEPS = 10;
+const int MAX_STEPS = 50;
 
 class Raytracer {
 private:
