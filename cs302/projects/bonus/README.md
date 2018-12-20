@@ -76,7 +76,7 @@ output incremental images that would illustrate how the bot built confidence
 in its assessment of its surroundings over time. Imagine my disappointment
 when this is what came out.
 
-![Bullshit Grid Map](./out.pgm)
+![Bullshit Grid Map](./out.png)
 
 What the hell is that? It's so lame!
 
@@ -99,7 +99,7 @@ Whatever the reason, it really sucked seeing that map. So I wanted to amp
 it up a bit. I wrote some temporary code to place the bot at evenly-spaced
 increments along the map, then spin 360 degrees and scan. Here's the result:
 
-![Slightly Better Grid Map](./best.pgm)
+![Slightly Better Grid Map](./best.png)
 
 This looks kind of cool. It's closer to what I'd imagined at least. But
 it is VERY far from what the assignment laid out. This image illustrates
